@@ -1,0 +1,15 @@
+name: CI
+on:
+  # schedule: [{cron: '0 0 * * *'}]
+  push: {branches: master}
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.1
+      - uses: omelkonian/setup-agda@v0.1
+        with:
+          agda-version: 2.6.2.1
+          stdlib-version: 1.7
+          main: Main
+          token: ${{ secrets.GITHUB_TOKEN }}
