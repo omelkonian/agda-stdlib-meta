@@ -1,3 +1,4 @@
+{-# OPTIONS --safe --without-K #-}
 ------------------------------------------------------------------------
 -- Meta-programming utilities
 ------------------------------------------------------------------------
@@ -7,7 +8,7 @@ open import Level hiding (suc)
 open import Function
 
 open import Reflection hiding (visibility)
-open import Reflection.Term
+open import Reflection.Term hiding (getName)
 import Reflection.Name as Name
 open import Reflection.Pattern
 import Reflection.Abstraction as Abs
@@ -29,8 +30,6 @@ open import Data.Fin hiding (_+_)
 open import Relation.Nullary using (Dec)
 open import Relation.Nullary.Decidable using (⌊_⌋)
 open import Relation.Binary.PropositionalEquality hiding ([_])
-
-open import Category.Applicative
 
 private variable
   ℓ : Level
@@ -68,6 +67,9 @@ pattern ⟦_⦅_⦆⇒_⟧ x tel k = clause tel (vArg x ∷ []) k
 pattern ⟦_∣_⇒_⟧ x y k = clause [] (vArg x ∷ vArg y ∷ []) k
 pattern ⟦_∣_⦅_⦆⇒_⟧ x y tel k = clause tel (vArg x ∷ vArg y ∷ []) k
 
+pattern ⟦_∣_∣_⇒_⟧ x y z k = Clause.clause [] (vArg x ∷ vArg y ∷ vArg z ∷ []) k
+pattern ⟦_∣_∣_⦅_⦆⇒_⟧ x y z tel k = Clause.clause tel (vArg x ∷ vArg y ∷ vArg z ∷ []) k
+
 -- lambdas
 pattern `λ_⇒_       x     k = lam visible (abs x k)
 pattern `λ⟦_∣_⇒_⟧   x y   k = `λ x ⇒ `λ y ⇒ k
@@ -90,6 +92,7 @@ pattern _∙ n = def n []
 pattern _∙⟦_⟧ n x = def n (vArg x ∷ [])
 pattern _∙⟦_∣_⟧ n x y = def n (vArg x ∷ vArg y ∷ [])
 pattern _∙⟦_∣_∣_⟧ n x y z = def n (vArg x ∷ vArg y ∷ vArg z ∷ [])
+pattern _∙⟦_∣_∣_∣_⟧ n x y z w = def n (vArg x ∷ vArg y ∷ vArg z ∷ vArg w ∷ [])
 
 pattern _◆ n = con n []
 pattern _◆⟦_⟧ n x = con n (vArg x ∷ [])
@@ -102,13 +105,51 @@ pattern _◇⟦_∣_⟧ n x y = Pattern.con n (vArg x ∷ vArg y ∷ [])
 -------------------------------------------------
 -- ** Other utilities
 
+getName : Abs A → String
+getName (abs s x) = s
+
+getVisibility : ∀ {a} {A : Set a} → Arg A → Visibility
+getVisibility (arg (arg-info v _) _) = v
+
+findMetas : Term → List Term
+findMetas' : List (Arg Term) → List Term
+findMetasCl : List Clause → List Term
+
+findMetas (var x args) = findMetas' args
+findMetas (con c args) = findMetas' args
+findMetas (def f args) = findMetas' args
+findMetas (lam v (abs _ x)) = findMetas x
+findMetas (pat-lam cs args) = findMetasCl cs Data.List.++ findMetas' args
+findMetas (pi (arg _ a) (abs _ b)) = findMetas a Data.List.++ findMetas b
+findMetas (agda-sort s) = []
+findMetas (lit l) = []
+findMetas m@(meta x args) = m ∷ findMetas' args
+findMetas unknown = []
+
+findMetas' [] = []
+findMetas' ((arg _ t) ∷ ts) = findMetas t Data.List.++ findMetas' ts
+
+findMetasCl [] = []
+findMetasCl (Clause.clause tel ps t ∷ c) = findMetas t Data.List.++ findMetasCl c
+findMetasCl (Clause.absurd-clause tel ps ∷ c) = findMetasCl c
+
+isMeta : Term → Bool
+isMeta (meta _ _) = true
+isMeta _ = false
+
+UnquoteDecl : Set
+UnquoteDecl = TC ⊤
+
 unArgs : Args A → List A
 unArgs = map unArg
 
-{-# TERMINATING #-}
 mapVariables : (ℕ → ℕ) → (Pattern → Pattern)
 mapVariables f (Pattern.var n)      = Pattern.var (f n)
-mapVariables f (Pattern.con c args) = Pattern.con c $ map (λ{ (arg i p) → arg i (mapVariables f p) }) args
+mapVariables f (Pattern.con c args) = Pattern.con c $ mapVariables′ args
+  where
+    mapVariables′ : List (Arg Pattern) → List (Arg Pattern)
+    mapVariables′ [] = []
+    mapVariables′ (arg i p ∷ l) = arg i (mapVariables f p) ∷ mapVariables′ l
 mapVariables _ p                    = p
 
 -- alternative view of function types as a pair of a list of arguments and a return type
