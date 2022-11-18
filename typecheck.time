@@ -1,5 +1,5 @@
-TOTAL: 1m23s
-Generics/Core: 0m24s
+TOTAL: 1m20s
+Generics/Core: 0m23s
 Class/Functor/Core: 0m0s
 Generics/Deriving: 0m1s
 Class/Show/Core: 0m0s
@@ -10,16 +10,16 @@ Generics: 0m0s
 Class/Show/Derive: 0m1s
 Class/Show: 0m0s
 Class/DecEq/Core: 0m0s
-Class/DecEq/Instances: 0m40s
+Class/DecEq/Instances: 0m39s
 Class/DecEq/Derive: 0m0s
-Class/DecEq: 0m1s
+Class/DecEq: 0m0s
 Class/Semigroup/Core: 0m0s
 Class/Semigroup/Instances: 0m1s
 Class/Semigroup/Derive: 0m0s
-Class/Semigroup: 0m0s
+Class/Semigroup: 0m1s
 Class/Monoid/Core: 0m0s
 Class/Monoid/Instances: 0m1s
-Class/Monoid/Derive: 0m1s
+Class/Monoid/Derive: 0m0s
 Class/Monoid: 0m0s
 Class/Functor/Instances: 0m1s
 Class/Functor/Derive: 0m0s
@@ -36,5 +36,5 @@ Class/Monad: 0m0s
 Classes: 0m0s
 Lenses/Core: 0m0s
 Lenses/Derive: 0m1s
-Lenses: 0m0s
-Main: 0m1s
+Lenses: 0m1s
+Main: 0m0s
