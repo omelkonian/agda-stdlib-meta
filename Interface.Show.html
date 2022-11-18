@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Interface.Show</title><link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css'/><style>.github-fork-ribbon:before { background-color: #333; }</style><link rel="stylesheet" href="css/Agda.css"></head><body><a class='github-fork-ribbon'href='https://github.com/omelkonian/stdlib-meta/tree/tactics-and-deriving/Interface/Show.agda'data-ribbon='Source code on Github' title='Source code on Github'>Source code on Github</a><pre class="Agda"><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Pragma">--safe</a> <a id="20" class="Pragma">--without-K</a> <a id="32" class="Symbol">#-}</a>
+
+<a id="37" class="Keyword">module</a> <a id="44" href="Interface.Show.html" class="Module">Interface.Show</a> <a id="59" class="Keyword">where</a>
+
+<a id="66" class="Keyword">open</a> <a id="71" class="Keyword">import</a> <a id="78" href="Level.html" class="Module">Level</a>
+<a id="84" class="Keyword">open</a> <a id="89" class="Keyword">import</a> <a id="96" href="Data.String.html" class="Module">Data.String</a> <a id="108" class="Keyword">hiding</a> <a id="115" class="Symbol">(</a><a id="116" href="Data.String.Base.html#1561" class="Primitive">show</a><a id="120" class="Symbol">)</a>
+
+<a id="123" class="Keyword">private</a>
+  <a id="133" class="Keyword">variable</a> <a id="142" href="Interface.Show.html#142" class="Generalizable">a</a> <a id="144" class="Symbol">:</a> <a id="146" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+
+<a id="153" class="Keyword">record</a> <a id="Show"></a><a id="160" href="Interface.Show.html#160" class="Record">Show</a> <a id="165" class="Symbol">(</a><a id="166" href="Interface.Show.html#166" class="Bound">A</a> <a id="168" class="Symbol">:</a> <a id="170" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="174" href="Interface.Show.html#142" class="Generalizable">a</a><a id="175" class="Symbol">)</a> <a id="177" class="Symbol">:</a> <a id="179" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="183" href="Interface.Show.html#174" class="Bound">a</a> <a id="185" class="Keyword">where</a>
+  <a id="193" class="Keyword">field</a>
+    <a id="Show.show"></a><a id="203" href="Interface.Show.html#203" class="Field">show</a> <a id="208" class="Symbol">:</a> <a id="210" href="Interface.Show.html#166" class="Bound">A</a> <a id="212" class="Symbol">→</a> <a id="214" href="Agda.Builtin.String.html#336" class="Postulate">String</a>
+
+<a id="222" class="Keyword">open</a> <a id="227" href="Interface.Show.html#160" class="Module">Show</a> <a id="232" class="Symbol">⦃...⦄</a> <a id="238" class="Keyword">public</a>
+</pre></body></html>

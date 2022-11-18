@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Interface.Monad.Instance</title><link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css'/><style>.github-fork-ribbon:before { background-color: #333; }</style><link rel="stylesheet" href="css/Agda.css"></head><body><a class='github-fork-ribbon'href='https://github.com/omelkonian/stdlib-meta/tree/tactics-and-deriving/Interface/Monad/Instance.agda'data-ribbon='Source code on Github' title='Source code on Github'>Source code on Github</a><pre class="Agda"><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Pragma">--safe</a> <a id="20" class="Pragma">--without-K</a> <a id="32" class="Symbol">#-}</a>
+<a id="36" class="Keyword">module</a> <a id="43" href="Interface.Monad.Instance.html" class="Module">Interface.Monad.Instance</a> <a id="68" class="Keyword">where</a>
+
+<a id="75" class="Keyword">import</a> <a id="82" href="Data.List.html" class="Module">Data.List</a> <a id="92" class="Symbol">as</a> <a id="95" class="Module">List</a>
+<a id="100" class="Keyword">import</a> <a id="107" href="Data.Maybe.html" class="Module">Data.Maybe</a> <a id="118" class="Symbol">as</a> <a id="121" class="Module">Maybe</a>
+<a id="127" class="Keyword">open</a> <a id="132" class="Keyword">import</a> <a id="139" href="Function.html" class="Module">Function</a>
+
+<a id="149" class="Keyword">open</a> <a id="154" class="Keyword">import</a> <a id="161" href="Interface.Monad.html" class="Module">Interface.Monad</a> <a id="177" class="Keyword">public</a>
+<a id="184" class="Keyword">open</a> <a id="189" href="Interface.Monad.html#175" class="Module">Monad</a> <a id="195" class="Symbol">⦃...⦄</a> <a id="201" class="Keyword">public</a>
+
+<a id="209" class="Keyword">instance</a>
+  <a id="Monad-List"></a><a id="220" href="Interface.Monad.Instance.html#220" class="Function">Monad-List</a> <a id="231" class="Symbol">:</a> <a id="233" href="Interface.Monad.html#175" class="Record">Monad</a> <a id="239" href="Agda.Builtin.List.html#148" class="Datatype">List.List</a>
+  <a id="251" href="Interface.Monad.Instance.html#220" class="Function">Monad-List</a> <a id="262" class="Symbol">.</a><a id="263" href="Interface.Monad.html#286" class="Field">return</a> <a id="270" class="Symbol">=</a> <a id="272" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">List._∷</a> <a id="280" href="Agda.Builtin.List.html#185" class="InductiveConstructor">List.[]</a>
+  <a id="290" href="Interface.Monad.Instance.html#220" class="Function">Monad-List</a> <a id="301" class="Symbol">.</a><a id="302" href="Interface.Monad.html#307" class="Field Operator">_&gt;&gt;=_</a>  <a id="309" class="Symbol">=</a> <a id="311" href="Function.Base.html#1554" class="Function">flip</a> <a id="316" href="Data.List.Base.html#4450" class="Function">List.concatMap</a>
+
+  <a id="Monad-Maybe"></a><a id="334" href="Interface.Monad.Instance.html#334" class="Function">Monad-Maybe</a> <a id="346" class="Symbol">:</a> <a id="348" href="Interface.Monad.html#175" class="Record">Monad</a> <a id="354" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe.Maybe</a>
+  <a id="368" href="Interface.Monad.Instance.html#334" class="Function">Monad-Maybe</a> <a id="380" class="Symbol">.</a><a id="381" href="Interface.Monad.html#286" class="Field">return</a> <a id="388" class="Symbol">=</a> <a id="390" href="Agda.Builtin.Maybe.html#174" class="InductiveConstructor">Maybe.just</a>
+  <a id="403" href="Interface.Monad.Instance.html#334" class="Function">Monad-Maybe</a> <a id="415" class="Symbol">.</a><a id="416" href="Interface.Monad.html#307" class="Field Operator">_&gt;&gt;=_</a>  <a id="423" class="Symbol">=</a> <a id="425" href="Data.Maybe.Base.html#2227" class="Function Operator">Maybe._&gt;&gt;=_</a>
+</pre></body></html>
