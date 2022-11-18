@@ -1,14 +1,13 @@
 {-# OPTIONS --safe --without-K #-}
 module Generics.Core where
 
-open import Data.List
-open import Data.String
-open import Data.Product
+open import Data.Unit using (⊤)
+open import Data.List using ([]; _∷_)
+open import Data.Product using (_×_)
 
 open import Reflection
 open import Reflection.Term
 
--------------------------------------------------
 -- ** Smart constructors
 
 -- arguments
@@ -26,8 +25,6 @@ pattern `_ x = Pattern.var x
 pattern `∅   = Pattern.absurd 0
 
 -- clauses
-PatTelescope = List (String × Arg Type)
-
 pattern ⟦⦅_⦆∅⟧ tel = absurd-clause tel (vArg `∅ ∷ [])
 pattern ⟦∅⟧ = absurd-clause [] (vArg `∅ ∷ [])
 
@@ -74,3 +71,12 @@ pattern _◆⟦_∣_⟧ n x y = con n (vArg x ∷ vArg y ∷ [])
 pattern _◇ n = Pattern.con n []
 pattern _◇⟦_⟧ n x = Pattern.con n (vArg x ∷ [])
 pattern _◇⟦_∣_⟧ n x y = Pattern.con n (vArg x ∷ vArg y ∷ [])
+
+-- ** useful type aliases
+PatTelescope = Telescope
+Context = Args Type
+TTerm = Term × Type
+Hole  = Term
+THole = Hole × Type
+Tactic  = Hole → TC ⊤
+UnquoteDecl = TC ⊤

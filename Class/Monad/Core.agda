@@ -12,7 +12,7 @@ open import Class.Applicative.Core
 {-
 Monad : (Type ℓ → Type ℓ) → Type (suc ℓ)
 Monad {ℓ = ℓ} = RawMonad {f = ℓ}
-open RawMonad ⦃ ... ⦄ public
+open RawMonad ⦃...⦄ public
   using (return; _>>=_; _>>_; _=<<_; _>=>_; _<=<_; join)
 -}
 
