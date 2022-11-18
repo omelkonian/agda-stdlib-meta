@@ -1,22 +1,24 @@
-{-# OPTIONS --safe #-}
+{-# OPTIONS --safe --without-K #-}
 module Class.DecEq.Instances where
 
 open import Agda.Primitive using () renaming (Set to Type)
 open import Level using (Level)
-open import Function using (_∋_)
+open import Function using (_∋_; _∘_; _$_)
 
-open import Data.Product using (_×_; _,_; Σ)
+open import Data.Product using (_×_; _,_; Σ; proj₁; proj₂)
+import Data.Product.Properties as Pr
 open import Data.Sum using (_⊎_)
 open import Data.These using (These)
 open import Data.Maybe using (Maybe)
-open import Data.List using (List)
-open import Data.List.NonEmpty using (List⁺; _∷_)
+open import Data.List as L using (List)
+import Data.List.Properties as L
+open import Data.List.NonEmpty as LNE using (List⁺; _∷_)
 open import Data.Vec using (Vec)
 open import Data.Fin using (Fin)
 open import Reflection using (Arg)
 
 open import Relation.Nullary using (yes; no)
-open import Relation.Binary.PropositionalEquality using (refl)
+open import Relation.Binary.PropositionalEquality using (refl; _≡_)
 
 open import Class.DecEq.Core
 
@@ -52,13 +54,18 @@ instance
     where import Data.List.Properties as M
 
   module _ ⦃ _ : DecEq A ⦄ where
+    private
+      ∷-injective : ∀ {x y : A} {xs ys} →
+        x ∷ xs ≡ y LNE.∷ ys → x ≡ y × xs ≡ ys
+      ∷-injective refl = (refl , refl)
+
     DecEq-List⁺ : DecEq (List⁺ A)
     DecEq-List⁺ ._≟_ (x ∷ xs) (y ∷ ys)
       with x ≟ y
-    ... | no x≢y = no λ where refl → x≢y refl
+    ... | no x≢y = no $ x≢y ∘ proj₁ ∘ ∷-injective
     ... | yes refl
       with xs ≟ ys
-    ... | no xs≢ys = no λ where refl → xs≢ys refl
+    ... | no xs≢ys = no $ xs≢ys ∘ proj₂ ∘ ∷-injective
     ... | yes refl = yes refl
 
     DecEq-Vec : ∀ {n} → DecEq (Vec A n)
@@ -68,15 +75,6 @@ instance
     DecEq-Maybe : DecEq (Maybe A)
     DecEq-Maybe ._≟_ = M.≡-dec _≟_
       where import Data.Maybe.Properties as M
-
-  DecEq-Σ : ∀ {B : A → Type} ⦃ _ : DecEq A ⦄ ⦃ _ : ∀ {x} → DecEq (B x) ⦄ → DecEq (Σ A B)
-  DecEq-Σ ._≟_ (x , y) (x′ , y′)
-    with x ≟ x′
-  ... | no ¬p    = no λ where refl → ¬p refl
-  ... | yes refl
-    with y ≟ y′
-  ... | no ¬p    = no λ where refl → ¬p refl
-  ... | yes refl = yes refl
 
   module _ ⦃ _ : DecEq A ⦄ ⦃ _ : DecEq B ⦄ where
 

@@ -67,9 +67,6 @@ isMeta : Term → Bool
 isMeta (meta _ _) = true
 isMeta _ = false
 
-UnquoteDecl : Set
-UnquoteDecl = TC ⊤
-
 unArgs : Args A → List A
 unArgs = map unArg
 
@@ -241,13 +238,6 @@ hide a        = a
 apply⋯ : Args Type → Name → Type
 apply⋯ is n = def n $ remove-iArgs (map (λ{ (n , arg i _) → arg i (♯ (length is ∸ suc (toℕ n)))}) (zip (allFin $ length is) is))
 
-TTerm = Term × Type
-Hole  = Term
-THole = Hole × Type
-
-Context = List (Arg Type)
-Tactic  = Hole → TC ⊤
-
 fresh-level : TC Level
 fresh-level = newMeta (quote Level ∙) >>= unquoteTC
 
@@ -382,3 +372,12 @@ module _ where -- ** unification
   unifyStricts ht = NE.foldl₁ _<|>_
                   ∘ (NE._∷ʳ error "∅")
                   ∘ map ({-noConstraints ∘ -}unifyStrict ht)
+
+compatible? : Type → Type → TC Bool
+compatible? ty ty′ = do
+  -- print $ show ty ◇ " ≈? " ◇ show ty′
+  b ← runSpeculative $ (_, false) <$>
+    catchTC (unify (varsToUnknown ty) (varsToUnknown ty′) >> return true)
+            (return false)
+  -- print $ "  ——→ " ◇ show b
+  return b

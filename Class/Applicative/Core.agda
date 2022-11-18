@@ -14,7 +14,7 @@ open import Class.Functor.Core
 {-
 Applicative : (Type ℓ → Type ℓ) → Type (lsuc ℓ)
 Applicative {ℓ = ℓ} = RawApplicative {f = ℓ}
-open RawApplicative ⦃ ... ⦄ public
+open RawApplicative ⦃...⦄ public
   using (pure)
   renaming ( _⊛_ to _<*>_; _<⊛_ to _<*_ ; _⊛>_ to _*>_)
 -}

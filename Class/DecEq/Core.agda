@@ -1,4 +1,4 @@
-{-# OPTIONS --safe #-}
+{-# OPTIONS --safe --without-K #-}
 module Class.DecEq.Core where
 
 open import Agda.Primitive using () renaming (Set to Type)
@@ -19,8 +19,4 @@ record DecEq {ℓ} (A : Type ℓ) : Type ℓ where
   x ≠ y = not (x == y)
 
   infix 4 _≟_ _==_ _≠_
-
-  ≟-refl : ∀ x → (x ≟ x) ≡ yes refl
-  ≟-refl x with refl , p ← dec-yes (x ≟ x) refl = p
-
-open DecEq ⦃ ... ⦄ public
+open DecEq ⦃...⦄ public

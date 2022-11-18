@@ -72,4 +72,6 @@ instance
   Show-Tel = Show Telescope ∋ mkShow showTel
   Show-Definition = mkShow showDefinition
 
-  Show-Terms = Show (Args Name) ∋ Show-List ⦃ Show-Arg ⦄
+  Show-AName = Show (Arg Name) ∋ Show-Arg
+  Show-AType = Show (Arg Type) ∋ Show-Arg
+  Show-ATerms = Show (Args Name) ∋ Show-List

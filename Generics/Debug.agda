@@ -9,16 +9,24 @@ open import Function using (_∘_; _$_)
 
 open import Data.Unit using (⊤)
 open import Data.String as Str using (String)
-open import Data.List using ([]; _∷_; [_])
+open import Data.List using ([]; _∷_; [_]; length; List; allFin; zip)
 open import Data.Product using (_×_; proj₁; proj₂; _,_)
 open import Data.Nat using (ℕ)
+open import Data.Fin using (Fin)
 
-open import Reflection
+open import Reflection hiding (_>>_; _>>=_)
 open import Reflection.Term
 open import Reflection.Meta
 
 open import Class.Show.Core
 open import Class.Show.Instances
+open import Class.Functor.Instances
+open import Class.Monad.Core
+open import Class.Monad.Instances
+open import Class.Monad.Utils
+open import Class.Foldable.Instances
+open import Class.Traversable.Core
+open import Class.Traversable.Instances
 
 open import Generics.Core
 
@@ -31,6 +39,9 @@ error s = typeError [ strErr s ]
 
 _IMPOSSIBLE_ : TC A
 _IMPOSSIBLE_ = error "IMPOSSIBLE"
+
+enumerate : (xs : List A) → List (Fin (length xs) × A)
+enumerate xs = zip (allFin $ length xs) xs
 
 module Debug (v : String × ℕ) where
   -- i.e. set {-# OPTIONS -v v₁:v₂ #-} to enable such messages in the **debug** buffer.
@@ -56,6 +67,17 @@ module Debug (v : String × ℕ) where
       ∷ showTerm t
       ∷ "}\n"
       ∷ [])
+
+  printContext : Context → TC ⊤
+  printContext ctx = do
+    print "\t----CTX----"
+    void $ traverseM go (enumerate ctx)
+    where
+      go : Fin (length ctx) × Arg Type → TC ⊤
+      go (i , ty) = print $ "\t" Str.++ show i Str.++ " : " Str.++ show ty
+
+  printCurrentContext : TC ⊤
+  printCurrentContext = printContext =<< getContext
 
   -- ** definitions
   genSimpleDef : Name → Type → Term → TC ⊤
