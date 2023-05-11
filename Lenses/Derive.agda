@@ -20,9 +20,7 @@ open import Class.Show.Core
 open import Class.Show.Instances
 open import Class.Semigroup.Core
 open import Class.Semigroup.Instances
-open import Class.Monad.Core
-open import Class.Monad.Instances
-open import Class.Monad.Utils
+open import Class.Monad
 
 open import Lenses.Core
 

@@ -20,14 +20,22 @@ open import Generics
 
 open import Tactic.Helpers
 
-open import Interface.Monad.Instance
-open import Interface.MonadError.Instance
-open import Interface.MonadTC.Instance
-open import Interface.MonadReader.Instance
+open import Class.Traversable
+open import Class.Functor
+open import Class.MonadError.Instances
+open import Class.MonadTC.Instances
+open import Class.MonadReader.Instances
 
-private
-  variable a b : Level
-           A : Set a
+module _ where
+  open import Class.Monad hiding (Monad-List) public
+
+import Class.Monad
+
+private variable
+  a b : Level
+  A : Set a
+
+instance _ = Functor-M ⦃ Class.Monad.Monad-TC ⦄
 
 record ClauseBuilder (M : Set → Set) : Set₁ where
   field
@@ -90,6 +98,8 @@ singlePatternFromPattern (arg i p) =
 
 module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadError (List ErrorPart) M ⦄ ⦃ mre : MonadReader TCEnv M ⦄ ⦃ _ : MonadTC M ⦄ where
 
+  instance _ = Functor-M {M = M}
+
   ctxSinglePatterns : M (List SinglePattern)
   ctxSinglePatterns = do
     ctx ← getContext
@@ -125,13 +135,13 @@ module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadErr
   constructorPatterns' : Type → M (List SinglePattern)
   constructorPatterns' ty = do
     constrs ← getConstrsForType ty
-    traverseList (λ where (n , _) → constrToPattern n ty) constrs
+    traverse (λ where (n , _) → constrToPattern n ty) constrs
 
   -- all possible patterns for an inductive type
   constructorPatternsTyped : Type → List Type → M (List SinglePattern)
   constructorPatternsTyped ty ps = do
     constrs ← getConstrsForType ty
-    traverseList (λ where (n , _) → constrToPatternTyped n ps) constrs
+    traverse (λ where (n , _) → constrToPatternTyped n ps) constrs
 
 ClauseInfo : Set
 ClauseInfo = List SinglePattern
@@ -197,6 +207,8 @@ ContextMonad-Id .introPatternM _ a = a
 
 module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadError (List ErrorPart) M ⦄ ⦃ mre : MonadReader TCEnv M ⦄ ⦃ _ : MonadTC M ⦄ where
 
+  instance _ = Functor-M
+
   refineWithSingle : (Term → Term) → M Term → M Term
   refineWithSingle ref x = do
     goalTy ← goalTy
@@ -261,9 +273,11 @@ module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadErr
 
 module ClauseExprM {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ _ : ContextMonad M ⦄ where
 
+  instance _ = Functor-M
+
   -- Construct a ClauseExpr in M and extend the context appropriately
   matchExprM : List (SinglePattern × M (ClauseExpr ⊎ Maybe Term)) → M ClauseExpr
-  matchExprM = _<$>_ MatchExpr ∘ traverseList (λ where (a , b) → (a ,_) <$> introPatternM a b)
+  matchExprM = _<$>_ MatchExpr ∘ traverse (λ where (a , b) → (a ,_) <$> introPatternM a b)
 
   multiMatchExprM : List (NE.List⁺ SinglePattern × M (ClauseExpr ⊎ Maybe Term)) → M ClauseExpr
   multiMatchExprM = matchExprM ∘ Data.List.map helper

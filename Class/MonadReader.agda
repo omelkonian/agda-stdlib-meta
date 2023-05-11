@@ -1,15 +1,15 @@
 {-# OPTIONS --safe --without-K #-}
 
-module Interface.MonadReader where
+module Class.MonadReader where
 
 open import Prelude
 
-open import Interface.Monad
-open import Interface.MonadError
+open import Class.Monad
+open import Class.Functor
+open import Class.MonadError
 
 private variable ℓ : Level
 
-open Monad ⦃...⦄
 open MonadError ⦃...⦄
 
 record MonadReader (R : Set ℓ) (M : ∀ {a} → Set a → Set a) ⦃ _ : Monad M ⦄ : Setω where
@@ -19,6 +19,7 @@ record MonadReader (R : Set ℓ) (M : ∀ {a} → Set a → Set a) ⦃ _ : Monad
 
   reader : ∀ {a} {A : Set a} → (R → A) → M A
   reader f = f <$> ask
+    where instance _ = Functor-M
 
 open MonadReader ⦃...⦄
 

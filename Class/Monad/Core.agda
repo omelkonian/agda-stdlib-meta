@@ -1,31 +1,23 @@
 {-# OPTIONS --safe --without-K #-}
+
 module Class.Monad.Core where
 
-open import Agda.Primitive using () renaming (Set to Type; Setω to Typeω)
-open import Level using (Level; suc; _⊔_)
-open import Function using (id; _∘_)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Prelude
 
-open import Class.Functor.Core
-open import Class.Applicative.Core
+open import Class.Functor
 
-{-
-Monad : (Type ℓ → Type ℓ) → Type (suc ℓ)
-Monad {ℓ = ℓ} = RawMonad {f = ℓ}
-open RawMonad ⦃...⦄ public
-  using (return; _>>=_; _>>_; _=<<_; _>=>_; _<=<_; join)
--}
+private
+  variable
+    a b c : Level
+    A : Set a
+    B : Set b
+    C : Set c
 
-private variable
-  ℓ ℓ′ ℓ″ : Level
-  A : Type ℓ; B : Type ℓ′; C : Type ℓ″; M : Type↑
-
-record Monad (M : Type↑) : Typeω where
-  infixl 1 _>>=_ _>>_ _≫=_ _≫_ _>=>_
-  infixr 1 _=<<_ _=≪_ _<=<_
+record Monad (M : ∀ {a} → Set a → Set a) : Setω where
+  infixl 1 _>>=_ _>>_ _>=>_
+  infixr 1 _=<<_ _<=<_
 
   field
-    overlap ⦃ super ⦄ : Applicative M
     return : A → M A
     _>>=_  : M A → (A → M B) → M B
 
@@ -35,8 +27,6 @@ record Monad (M : Type↑) : Typeω where
   _=<<_ : (A → M B) → M A → M B
   f =<< c = c >>= f
 
-  _≫=_ = _>>=_; _≫_  = _>>_; _=≪_ = _=<<_
-
   _>=>_ : (A → M B) → (B → M C) → (A → M C)
   f >=> g = _=<<_ g ∘ f
 
@@ -45,65 +35,44 @@ record Monad (M : Type↑) : Typeω where
 
   join : M (M A) → M A
   join m = m >>= id
+
+  Functor-M : Functor M
+  Functor-M = λ where ._<$>_ f x → return ∘ f =<< x
+
+  instance _ = Functor-M
+
+  mapM : (A → M B) → List A → M (List B)
+  mapM f []       = return []
+  mapM f (x ∷ xs) = do y ← f x; y ∷_ <$> mapM f xs
+
+  concatMapM : (A → M (List B)) → List A → M (List B)
+  concatMapM f xs = concat <$> mapM f xs
+
+  forM : List A → (A → M B) → M (List B)
+  forM []       _ = return []
+  forM (x ∷ xs) f = do y ← f x; y ∷_ <$> forM xs f
+
+  -- concatForM : List A → (A → M (List B)) → M (List B)
+  -- concatForM xs f = concat <$> forM xs f
+
+  return⊤ void : M A → M ⊤
+  return⊤ k = k >> return tt
+  void = return⊤
+
+  filterM : (A → M Bool) → List A → M (List A)
+  filterM _ [] = return []
+  filterM p (x ∷ xs) = do
+    b ← p x
+    ((if b then [ x ] else []) ++_) <$> filterM p xs
+
+  -- traverse : ∀ {A B : Type} {M : Type → Type} → ⦃ Applicative M ⦄ → ⦃ Monad M ⦄ → (A → M B) → List A → M (List B)
+  -- traverse f = λ where
+  --   [] → return []
+  --   (x ∷ xs) → ⦇ f x ∷ traverse f xs ⦈
+
+  -- do-pure : ∀ {A : Type ℓ} {x : A} {mx : Maybe A} {f : A → Bool}
+  --   → mx ≡ just x
+  --   → f x ≡ true
+  --   → fromMaybe false (mx >>= pure ∘ f) ≡ true
+  -- do-pure refl f≡ rewrit
 open Monad ⦃...⦄ public
-
-record Monad-Laws (M : Type↑) ⦃ _ : Monad M ⦄ : Typeω where
-  field
-    >>=-identityˡ : ∀ {A : Type ℓ} {B : Type ℓ′} {a : A} {h : A → M B} →
-      (return a >>= h) ≡ h a
-    >>=-identityʳ : ∀ {A : Type ℓ} (m : M A) →
-      (m >>= return) ≡ m
-    >>=-assoc : ∀ {A : Type ℓ} {B : Type ℓ′} {C : Type ℓ″} (m : M A) {g : A → M B} {h : B → M C} →
-      ((m >>= g) >>= h) ≡ (m >>= (λ x → g x >>= h))
-open Monad-Laws ⦃...⦄ public
-
-record Lawful-Monad (M : Type↑) : Typeω where
-  field ⦃ isMonad ⦄ : Monad M
-        ⦃ hasMonadLaws ⦄ : Monad-Laws M
-open Lawful-Monad ⦃...⦄ using () public
-instance
-  mkLawful-Monad : ⦃ _ : Monad M ⦄ → ⦃ Monad-Laws M ⦄ → Lawful-Monad M
-  mkLawful-Monad = record {}
-
-record Monad′ (M : Type[ ℓ ↝ ℓ′ ]) : Type (suc ℓ ⊔ ℓ′) where
-  infixl 1 _>>=′_ _>>′_ _≫=′_ _≫′_ _>=>′_
-  infixr 1 _=<<′_ _=≪′_ _<=<′_
-
-  field
-    return′ : A → M A
-    _>>=′_  : M A → (A → M B) → M B
-
-  _>>′_ : M A → M B → M B
-  m₁ >>′ m₂ = m₁ >>=′ λ _ → m₂
-
-  _=<<′_ : (A → M B) → M A → M B
-  f =<<′ c = c >>=′ f
-
-  _>=>′_ : (A → M B) → (B → M C) → (A → M C)
-  f >=>′ g = _=<<′_ g ∘ f
-
-  _<=<′_ : (B → M C) → (A → M B) → (A → M C)
-  g <=<′ f = f >=>′ g
-
-  _≫=′_ = _>>=′_; _≫′_ = _>>′_; _=≪′_ = _=<<′_
-
-  -- join : M (M A) → M A
-  -- join m = m >>= id
-
-open Monad′ ⦃...⦄ public
-
-record Monad₀ (M : Type↑) : Typeω where
-  field ⦃ isMonad ⦄ : Monad M
-        ⦃ isApplicative₀ ⦄ : Applicative₀ M
-open Monad₀ ⦃...⦄ using () public
-instance
-  mkMonad₀ : ⦃ Monad M ⦄ → ⦃ Applicative₀ M ⦄ → Monad₀ M
-  mkMonad₀ = record {}
-
-record Monad⁺ (M : Type↑) : Typeω where
-  field ⦃ isMonad ⦄ : Monad M
-        ⦃ isAlternative ⦄ : Alternative M
-open Monad⁺ ⦃...⦄ using () public
-instance
-  mkMonad⁺ : ⦃ Monad M ⦄ → ⦃ Alternative M ⦄ → Monad⁺ M
-  mkMonad⁺ = record {}

@@ -4,12 +4,10 @@ open import Level
 
 open import Prelude
 
-open import Interface.Monad
+open import Class.Monad
 open import Reflection using (TC; ErrorPart; typeError; catchTC; strErr)
 
-open Monad ⦃...⦄
-
-module Interface.MonadError where
+module Class.MonadError where
 
 private
   variable

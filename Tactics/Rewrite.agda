@@ -27,7 +27,6 @@ open Debug ("rewrite" , 100)
 
 open import Class.DecEq
 open import Class.Functor
-open import Class.Applicative
 open import Class.Monad
 open import Class.Semigroup
 open import Class.Show

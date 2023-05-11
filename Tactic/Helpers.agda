@@ -15,10 +15,13 @@ open import Reflection.Syntax
 open import Reflection.Name using (_≟_)
 
 import Reflection
-open import Interface.Monad.Instance
-open import Interface.MonadError.Instance
-open import Interface.MonadReader.Instance
-open import Interface.MonadTC.Instance
+
+open import Class.Traversable
+open import Class.Functor
+open import Class.Monad
+open import Class.MonadError.Instances
+open import Class.MonadReader.Instances
+open import Class.MonadTC.Instances
 
 private
   variable a b c : Level
@@ -42,6 +45,8 @@ record RecordDef : Set where
     params : List (Abs (Arg Type))
 
 module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadError (List ErrorPart) M ⦄ ⦃ mre : MonadReader TCEnv M ⦄ ⦃ _ : MonadTC M ⦄ where
+
+  instance _ = Functor-M
 
   logTelescope : List (Maybe String × Arg Type) → M ⊤
   logTelescope l = withAppendDebugPath "context" do
@@ -104,7 +109,7 @@ module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadErr
     (data-type pars cs) ← getDefinition n
       where _ → error1 "Not a data definition!"
     debugLogᵐ ("Constructor names: " ∷ᵈᵐ cs ᵛ ∷ᵈᵐ []ᵐ)
-    cs' ← traverseList (λ n → (n ,_) <$> getType' n) cs
+    cs' ← traverse (λ n → (n ,_) <$> getType' n) cs
     debugLogᵐ ("Result: " ∷ᵈᵐ cs' ᵛⁿ ∷ᵈᵐ []ᵐ)
     args ← proj₁ <$> getType' n
     return record { name = n ; constructors = cs' ; params = take pars args ; indices = drop pars args }

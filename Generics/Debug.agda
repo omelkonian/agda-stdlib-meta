@@ -21,10 +21,7 @@ open import Reflection.Meta
 open import Class.Show.Core
 open import Class.Show.Instances
 open import Class.Functor.Instances
-open import Class.Monad.Core
-open import Class.Monad.Instances
-open import Class.Monad.Utils
-open import Class.Foldable.Instances
+open import Class.Monad
 open import Class.Traversable.Core
 open import Class.Traversable.Instances
 
@@ -71,7 +68,7 @@ module Debug (v : String × ℕ) where
   printContext : Context → TC ⊤
   printContext ctx = do
     print "\t----CTX----"
-    void $ traverseM go (enumerate ctx)
+    void $ traverse go (enumerate ctx)
     where
       go : Fin (length ctx) × Arg Type → TC ⊤
       go (i , ty) = print $ "\t" Str.++ show i Str.++ " : " Str.++ show ty

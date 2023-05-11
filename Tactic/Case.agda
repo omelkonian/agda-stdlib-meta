@@ -14,19 +14,19 @@ open import Tactic.ClauseBuilder
 open import Generics
 
 open import Reflection.Syntax
-open import Interface.Monad
-open import Interface.MonadTC hiding (Monad-TC)
+open import Class.Functor
+open import Class.Monad
+open import Class.MonadTC
 open import Reflection.TCI
 
 open import Meta
 
-open Monad ⦃...⦄
 open MonadTC ⦃...⦄
 
 instance
-  _ = Monad-TC
   _ = MonadTC-TCI
   _ = ContextMonad-MonadTC
+  _ = Functor-M
 
 open ClauseExprM
 

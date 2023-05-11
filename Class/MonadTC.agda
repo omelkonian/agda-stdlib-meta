@@ -1,6 +1,6 @@
 {-# OPTIONS --safe --without-K #-}
 
-module Interface.MonadTC where
+module Class.MonadTC where
 
 open import Prelude
 
@@ -12,18 +12,17 @@ open import Reflection.Syntax
 
 open import Reflection.Debug
 
-open import Interface.MonadReader
-open import Interface.MonadError
-open import Interface.Monad
+open import Class.MonadReader
+open import Class.MonadError
+open import Class.Functor
+open import Class.Monad
+open import Class.Traversable
+
 
 private
   variable
     a f : Level
     A B : Set f
-
-instance
-  Monad-TC : Monad R.TC
-  Monad-TC = record { R }
 
 data ReductionOptions : Set where
   onlyReduce : List Name → ReductionOptions
@@ -54,13 +53,12 @@ initTCEnvWithGoal goal = R.getContext <&> λ ctx → record
   ; goal           = inj₁ goal
   ; debug          = defaultDebugOptions
   }
-  where
-    open Monad ⦃...⦄
 
 initTCEnv : R.TC TCEnv
 initTCEnv = initTCEnvWithGoal unknown
 
-record MonadTC (M : ∀ {f} → Set f → Set f) ⦃ m : Monad M ⦄ ⦃ me : MonadError (List ErrorPart) M ⦄ : Setω₁ where
+record MonadTC (M : ∀ {f} → Set f → Set f)
+               ⦃ m : Monad M ⦄ ⦃ me : MonadError (List ErrorPart) M ⦄ : Setω₁ where
   field
     unify            : Term → Term → M ⊤
     typeError        : ∀ {A : Set f} → List ErrorPart → M A
@@ -83,7 +81,7 @@ record MonadTC (M : ∀ {f} → Set f → Set f) ⦃ m : Monad M ⦄ ⦃ me : Mo
     debugPrint       : String → ℕ → List ErrorPart → M ⊤
     runSpeculative   : M (A × Bool) → M A
 
-  open Monad m
+  instance _ = Functor-M
   open MonadError me
 
   runAndReset : M A → M A
@@ -129,8 +127,8 @@ record MonadTC (M : ∀ {f} → Set f → Set f) ⦃ m : Monad M ⦄ ⦃ me : Mo
   -- this allows mutual recursion
   declareAndDefineFuns : List (Arg Name × Type × List Clause) → M ⊤
   declareAndDefineFuns ds = do
-    traverseList (λ where (n , t , _) → declareDef n t) ds
-    traverseList ((λ where (arg _ n , _ , cs) → defineFun n cs)) ds
+    traverse (λ where (n , t , _) → declareDef n t) ds
+    traverse ((λ where (arg _ n , _ , cs) → defineFun n cs)) ds
     return _
 
   declareAndDefineFun : Arg Name → Type → List Clause → M ⊤
@@ -142,7 +140,8 @@ record MonadTC (M : ∀ {f} → Set f → Set f) ⦃ m : Monad M ⦄ ⦃ me : Mo
 module _ {M : ∀ {f} → Set f → Set f}
   ⦃ m : Monad M ⦄ ⦃ me : MonadError (List ErrorPart) M ⦄ ⦃ mtc : MonadTC M ⦄ ⦃ mre : MonadReader TCEnv M ⦄ where
 
-  open Monad m
+  instance _ = Functor-M
+
   open MonadError me
   open MonadTC mtc
   open MonadReader mre
@@ -300,7 +299,7 @@ module _ {M : ∀ {f} → Set f → Set f}
       (record′ c fs)  → return [ c ]
       (data-type pars cs) → return cs
       _                   → error (n ∷ᵈ "is not a data or record definition!" ∷ᵈ [])
-    traverseList (λ n → (n ,_) <$> (normalise =<< getType n)) (List Name ∋ cs)
+    traverse (λ n → (n ,_) <$> (normalise =<< getType n)) (List Name ∋ cs)
 
   getConstrsForType : Term → M (List (Name × Type))
   getConstrsForType ty = do

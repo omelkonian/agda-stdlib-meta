@@ -8,14 +8,18 @@ module Tactic.Assumption where
 open import Prelude
 open import Meta
 
-open import Interface.Monad.Instance
-open import Interface.MonadError.Instance
-open import Interface.MonadReader.Instance
-open import Interface.MonadTC.Instance
+open import Class.Monad
+open import Class.Functor
+open import Class.MonadError.Instances
+open import Class.MonadReader.Instances
+open import Class.MonadTC.Instances
 
 open import Tactic.Helpers
 
 open import Generics
+
+instance
+  _ = Functor-M
 
 solve : ⦃ _ : DebugOptions ⦄ → Term → Tactic
 solve t = initTac $ runSpeculative $ do

@@ -24,7 +24,6 @@ open Debug ("try" , 100)
 
 open import Class.Show
 open import Class.Semigroup
-open import Class.Monoid
 open import Class.Functor
 open import Class.Monad
 open import Class.DecEq

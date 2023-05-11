@@ -9,12 +9,10 @@ open import Data.Nat
 open import Data.Fin
 
 open import Reflection hiding (return; _>>=_; _>>_)
-open import Reflection.Meta hiding (toℕ)
 open import Reflection.Term
 
 open import Generics
 open Debug ("eta" , 100)
-open import Class.Functor
 open import Class.Monad
 open import Class.Show
 open import Class.Semigroup

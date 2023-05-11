@@ -25,14 +25,15 @@ open import Relation.Nullary
 open import Relation.Nullary.Decidable
 open import Relation.Nullary.Product
 
-module _ where
-  open import Interface.DecEq hiding (DecEq-List; DecEq-ℕ; DecEq-ℤ; DecEq-⊤; DecEq-Maybe) public
+open import Class.DecEq.Core public
 
 open import Tactic.ClauseBuilder
 open import Tactic.Derive (quote DecEq) (quote _≟_)
 
-open import Interface.Monad.Instance
-open import Interface.MonadTC.Instance
+open import Class.Functor
+open import Class.Traversable
+open import Class.Monad
+open import Class.MonadTC.Instances
 
 instance
   _ = ContextMonad-MonadTC
@@ -62,7 +63,7 @@ module _ (transName : Name → Maybe Name) where
   mapDiag : Maybe SinglePattern → TC Term
   mapDiag nothing          = return $ `no `λ⦅ [ ("" , vArg?) ] ⦆∅
   mapDiag (just p@(l , _)) = let k = length l in do
-    typeList ← traverseList inferType (applyDownFrom ♯ (length l))
+    typeList ← traverse ⦃ Functor-List ⦄ inferType (applyDownFrom ♯ (length l))
     return $ quote map' ∙⟦ genEquiv k ∣ genPf k (L.map eqFromTerm typeList) ⟧
     where
       genPf : ℕ → List (Term → Term → Term) → Term

@@ -19,13 +19,15 @@ import Reflection
 
 open import Relation.Nullary.Negation
 
-open import Interface.Show
+open import Class.Show.Core
 
 open import Tactic.ClauseBuilder
 open import Tactic.Derive (quote Show) (quote show)
 
-open import Interface.Monad.Instance
-open import Interface.MonadTC.Instance
+open import Class.Traversable
+open import Class.Functor
+open import Class.Monad
+open import Class.MonadTC.Instances
 
 instance
   _ = ContextMonad-MonadTC
@@ -59,7 +61,7 @@ module _ (transName : Name → Maybe Name) where
 
   patternToClause : SinglePattern → NE.List⁺ SinglePattern × TC (ClauseExpr ⊎ Maybe Term)
   patternToClause p@(l , arg _ (Pattern.con n _)) = NE.[ p ] , finishMatch do
-    typeList ← traverseList (λ t → do T ← inferType t; return (T , t)) (applyDownFrom ♯ (length l))
+    typeList ← traverse ⦃ Functor-List ⦄ (λ t → do T ← inferType t; return (T , t)) (applyDownFrom ♯ (length l))
     return $ genShow n (L.map (uncurry showFromTerm) $ reverse typeList)
   patternToClause p = NE.[ p ] , error1 "Error: not a con!"
 

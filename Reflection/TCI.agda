@@ -13,10 +13,10 @@ import Agda.Builtin.Reflection as R'
 import Reflection as R
 open import Reflection.Syntax
 
-open import Interface.Monad
-open import Interface.MonadError using (MonadError)
-open import Interface.MonadReader
-open import Interface.MonadTC hiding (Monad-TC)
+open import Class.Monad hiding (Monad-TC)
+open import Class.MonadError using (MonadError)
+open import Class.MonadReader
+open import Class.MonadTC
 
 open Monad
 
@@ -27,13 +27,13 @@ TC : Set a → Set a
 TC = ReaderT TCEnv R.TC
 
 Monad-TC : Monad TC
-Monad-TC = Monad-ReaderT ⦃ Interface.MonadTC.Monad-TC ⦄
+Monad-TC = Monad-ReaderT ⦃ Class.Monad.Monad-TC ⦄
 
 MonadReader-TC : MonadReader TCEnv TC ⦃ Monad-TC ⦄
-MonadReader-TC = MonadReader-ReaderT ⦃ Interface.MonadTC.Monad-TC ⦄
+MonadReader-TC = MonadReader-ReaderT ⦃ Class.Monad.Monad-TC ⦄
 
 MonadError-TC : MonadError (List ErrorPart) TC
-MonadError-TC = MonadError-ReaderT ⦃ Interface.MonadTC.Monad-TC ⦄ ⦃ Interface.MonadError.MonadError-TC ⦄
+MonadError-TC = MonadError-ReaderT ⦃ Class.Monad.Monad-TC ⦄ ⦃ Class.MonadError.MonadError-TC ⦄
 
 applyReductionOptions : TC A → TC A
 applyReductionOptions x r@record { reduction = onlyReduce red } = R'.onlyReduceDefs red (x r)

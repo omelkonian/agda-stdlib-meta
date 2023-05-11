@@ -18,10 +18,10 @@ open import Tactic.Helpers
 open import Tactic.Constrs
 open import Tactic.Assumption
 
-open import Interface.Monad.Instance
-open import Interface.MonadError.Instance
-open import Interface.MonadReader.Instance
-open import Interface.MonadTC.Instance
+open import Class.Monad
+open import Class.MonadError.Instances
+open import Class.MonadReader.Instances
+open import Class.MonadTC.Instances
 
 private
   variable ℓ : Agda.Primitive.Level
@@ -151,7 +151,7 @@ module _ ⦃ _ : DebugOptions ⦄ where
     by-reduceDecInGoal' r t = initTac $ reduceDecInGoal r t
 
 private
-  open import Interface.DecEq
+  open import Class.DecEq
 
   module Test (A : Set) ⦃ _ : DecEq A ⦄ where
     open import Tactic.Defaults

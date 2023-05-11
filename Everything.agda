@@ -1,5 +1,11 @@
 {-# OPTIONS --safe #-}
 
+-- TODO
+-- - fuel
+-- - commutative ring solver
+-- - fix deriving for `Term`
+-- - profiling
+
 module Everything where
 
 open import Tactic.AnyOf

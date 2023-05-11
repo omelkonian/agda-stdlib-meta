@@ -36,12 +36,15 @@ open import Relation.Nullary.Decidable
 open import Tactic.ClauseBuilder
 open import Tactic.Helpers
 
-open import Interface.Monad.Instance
-open import Interface.MonadReader.Instance
-open import Interface.MonadTC.Instance
+open import Class.Monad
+open import Class.Traversable
+open import Class.Functor
+open import Class.MonadReader.Instances
+open import Class.MonadTC.Instances
 
 instance
   _ = ContextMonad-MonadTC
+  _ = Functor-M
 
 open ClauseExprM
 
@@ -109,13 +112,13 @@ module _ (arity : ℕ) (genCe : (Name → Maybe Name) → List SinglePattern →
 
   deriveMulti : Name × Name × List Name → TC (List (Arg Name × Type × List Clause))
   deriveMulti (dName , iName , hClasses) = do
-    hClassNames ← traverseList
+    hClassNames ← traverse ⦃ Functor-List ⦄
       (λ cn → freshName (showName className S.++ "-" S.++ showName cn S.++ showName dName)) hClasses
-    traverseList (deriveSingle (L.zip hClasses hClassNames) dName iName) (nothing ∷ L.map just hClasses)
+    traverse ⦃ Functor-List ⦄ (deriveSingle (L.zip hClasses hClassNames) dName iName) (nothing ∷ L.map just hClasses)
 
   derive-Class : ⦃ _ : DebugOptions ⦄ → List (Name × Name) → UnquoteDecl
   derive-Class l = initUnquoteWithGoal (className ∙) $
-    declareAndDefineFuns =<< concat <$> traverseList helper l
+    declareAndDefineFuns =<< concat <$> traverse ⦃ Functor-List ⦄ helper l
     where
       helper : Name × Name → TC (List (Arg Name × Type × List Clause))
       helper (a , b) = do hs ← genMutualHelpers a ; deriveMulti (a , b , hs)

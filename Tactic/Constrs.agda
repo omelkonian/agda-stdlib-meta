@@ -15,10 +15,14 @@ open import Generics
 
 open import Tactic.Helpers
 
-open import Interface.Monad.Instance
-open import Interface.MonadError.Instance
-open import Interface.MonadReader.Instance
-open import Interface.MonadTC.Instance
+open import Class.Traversable
+open import Class.Monad
+open import Class.Functor.Instances
+open import Class.MonadError.Instances
+open import Class.MonadReader.Instances
+open import Class.MonadTC.Instances
+
+instance _ = Functor-M ⦃ Class.Monad.Monad-TC ⦄
 
 applyConstrToUnknowns : Name → Type → Term
 applyConstrToUnknowns n ty = con n (Data.List.map toUnknown $ argTys ty)
@@ -42,7 +46,7 @@ tryConstrsWith' (suc depth) tac =
       t' ← local (λ env → record env { reconstruction = true }) $ checkType t goalTy
       unify goal t'
       debugLog1 "Success!"
-      traverseList (λ t → runWithHole t (tryConstrsWith' depth tac)) (findMetas t')
+      traverse ⦃ Class.Functor.Instances.Functor-List ⦄ (λ t → runWithHole t (tryConstrsWith' depth tac)) (findMetas t')
       return tt)
     constrs)
     (logAndError1 "No constructors were able to solve the goal!")
