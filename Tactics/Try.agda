@@ -217,13 +217,13 @@ tryWith userDB f₀ hole₀ = do
   (f , fTy) ← viewTerm f₀
   print $ show f ◇ " : " ◇ show fTy
   ctx ← getContext
-  prints "ctx" ctx
+  printCurrentContext
   let
     db : List Term
     db = nodup
        $ map ♯ (upTo $ length ctx)
       ++ subterms holeTy
-      ++ subterms ctx
+      ++ subterms (map proj₂ ctx)
       ++ userDB
       ++ [ unknown ]
   prints "db" db

@@ -61,7 +61,7 @@ genClassType arity dName wName = do
     adjustParams [] = return []
     adjustParams (abs x (arg _ t) ∷ l) = do
       a ← (if_then [ (abs "_" (iArg (className ∙⟦ ♯ 0 ⟧)) , false) ] else []) <$> isNArySort arity t
-      ps ← extendContext (hArg t) (adjustParams l)
+      ps ← extendContext (x , hArg t) (adjustParams l)
       let ps' = flip L.map ps λ where
         (abs s (arg i t) , b) → (abs s (arg i (mapVars (_+ (if b then length a else 0)) t)) , b)
       return (((abs x (hArg t) , true) ∷ a) ++ ps')

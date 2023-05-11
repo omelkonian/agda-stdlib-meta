@@ -25,9 +25,6 @@ mkExistential lvl t = do
     go n₀ (suc n) = quote ∃ ∙⟦ (`λ "_" ⇒ go n₀ n) ⟧
 
 macro
-  mk∃[nest:_] : ℕ → Name → Tactic
-  mk∃[nest:_] lvl t hole = mkExistential lvl t >>= unify hole
-
   mk∃ : Name → Tactic
   mk∃ t hole = mkExistential 0 t >>= unify hole
 
@@ -42,7 +39,7 @@ private
     data Y : String → ℕ → Set where
       mkY : Y "" 1
 
-    _ : mk∃[nest: 1 ] Y
+    _ : mk∃ Y
     _ = "" , 1 , mkY
 
     module _ (s : String) where
@@ -50,10 +47,10 @@ private
       data Z : ℕ → Set where
         mkZ : Z 1
 
-      _ : mk∃[nest: 2 ] Z
+      _ : mk∃ Z
       _ = 1 , mkZ
 
-    _ : mk∃[nest: 1 ] Z
+    _ : mk∃ Z
     _ = "sth" , 1 , mkZ
 
   _ : mk∃ Y

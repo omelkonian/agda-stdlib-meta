@@ -60,9 +60,9 @@ module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadErr
           (just "") → "_"
           (just x)  → x
         debugLog ("  " ∷ᵈ name ∷ᵈ " : "  ∷ᵈ mapVars (_∸ (n ∸ (1 + length l))) t ∷ᵈ [])
-        extendContext ty $ helper n l
+        extendContext (name , ty) $ helper n l
 
-  logContext : List $ Arg Type → M ⊤
+  logContext : Telescope → M ⊤
   logContext l = withAppendDebugPath "context" do
     debugLog1 "Context:"
     catch (helper (length l) l) (λ _ → debugLog1 "Error while printing the context!")
@@ -74,9 +74,9 @@ module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadErr
           where _ → error1 "Bug in logContext!"
         debugLog ("Error while infering the goal type! Goal: " ∷ᵈ t ∷ᵈ [])
     where
-      helper : ℕ → List $ Arg Type → M ⊤
+      helper : ℕ → Telescope → M ⊤
       helper n [] = return _
-      helper n (arg _ t ∷ l) = do
+      helper n ((_ , arg _ t) ∷ l) = do
         helper n l
         debugLog ("  " ∷ᵈ ♯ (n ∸ (length l + 1)) ∷ᵈ " : " ∷ᵈ mapVars (_+ (n ∸ length l)) t ∷ᵈ [])
 
@@ -95,7 +95,7 @@ module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadErr
       helper : Type → ℕ → M TypeView
       helper ty    zero = return $ viewTy ty
       helper ty (suc k) with viewTy ty
-      ... | (tel , ty') = extendContext' (map unAbs tel) $ do
+      ... | (tel , ty') = extendContext' (map (λ where (abs s t) → s , t) tel) $ do
         rTy ← reduce ty'
         (tel' , rTy') ← helper rTy k
         return (tel ++ tel' , rTy')

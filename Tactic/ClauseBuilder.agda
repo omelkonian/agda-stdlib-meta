@@ -103,7 +103,7 @@ module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadErr
   ctxSinglePatterns : M (List SinglePattern)
   ctxSinglePatterns = do
     ctx ← getContext
-    return (singlePatternFromPattern <$> zipWithIndex (λ where k (arg i _) → arg i (` k)) ctx)
+    return (singlePatternFromPattern <$> zipWithIndex (λ where k (_ , (arg i _)) → arg i (` k)) ctx)
 
   -- TODO: add the ability to match initial hidden arguments
   -- TODO: add dot patterns
@@ -243,7 +243,7 @@ module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadErr
   isProj _                = false
 
   -- if the goal is of type (a : A) → B, return the type of the branch of pattern p and new context
-  specializeType : SinglePattern → Type → M (Type × List (Arg Type))
+  specializeType : SinglePattern → Type → M (Type × Telescope)
   specializeType p@(t , arg i p') goalTy = markDontFail "specializeType" $ inDebugPath "specializeType" $ runAndReset do
     debugLog ("Goal type to specialize: " ∷ᵈ goalTy ∷ᵈ [])
     cls@((Clause.clause tel _ _) ∷ _) ← return $ clauseExprToClauses $ MatchExpr $
@@ -256,12 +256,10 @@ module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadErr
                   ∷ᵈ "\nWith type:" ∷ᵈ goalTy ∷ᵈ "\nSinglePattern:" -- ∷ᵈ {!p!}
                   ∷ᵈ []) >> error1 "BUG"
     let varsToUnbind = 0
-    let newCtx = proj₂ <$> tel'
+    let newCtx = tel'
     let m = meta x (map-Args (mapVars (_∸ varsToUnbind)) $ take (length ap ∸ varsToUnbind) ap)
-    logCurrentContext
     debugLog1 "New context:"
-    logTelescope (Data.List.map (nothing ,_) newCtx)
-    debugLog1 "TEST"
+    logContext newCtx
     goalTy' ← extendContext' newCtx $ inferType m
     return (goalTy' , newCtx)
 

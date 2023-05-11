@@ -37,8 +37,8 @@ record TCEnv : Set where
     reconstruction : Bool
     noConstraints  : Bool
     reduction      : ReductionOptions
-    globalContext  : List $ Arg Type
-    localContext   : List $ Abs $ Arg Type
+    globalContext  : Telescope
+    localContext   : Telescope
     goal           : Term ⊎ Type
     debug          : DebugOptions
 
@@ -236,21 +236,21 @@ module _ {M : ∀ {f} → Set f → Set f}
       isAppliedToUnknownsAndMetas (meta x args)     = isUnknownsAndMetas args
       isAppliedToUnknownsAndMetas _                 = true
 
-  extendContext : Arg Type → M A → M A
-  extendContext ty = local λ where e@record { localContext = Γ } → record e { localContext = abs "" ty ∷ Γ }
+  extendContext : String × Arg Type → M A → M A
+  extendContext ty = local λ where e@record { localContext = Γ } → record e { localContext = ty ∷ Γ }
 
-  getContext : M $ List $ Arg Type
+  getContext : M Telescope
   getContext = reader λ where
-    e@record { localContext = Γ ; globalContext = Γ' } → map unAbs Γ Data.List.++ Γ'
+    e@record { localContext = Γ ; globalContext = Γ' } → Γ Data.List.++ Γ'
 
-  getLocalContext : M $ List $ Arg Type
-  getLocalContext = reader λ where e@record { localContext = Γ } → map unAbs Γ
+  getLocalContext : M Telescope
+  getLocalContext = reader λ where e@record { localContext = Γ } → Γ
 
-  inContext : List $ Arg Type → M A → M A
-  inContext ctx = local λ e → record e { localContext = map (abs "") ctx }
+  inContext : Telescope → M A → M A
+  inContext ctx = local λ e → record e { localContext = ctx }
 
   -- extend context by multiple variables
-  extendContext' : List (Arg Type) → M A → M A
+  extendContext' : Telescope → M A → M A
   extendContext' [] x = x
   extendContext' (c ∷ cs) x = extendContext c (extendContext' cs x)
 
@@ -311,8 +311,8 @@ module _ {M : ∀ {f} → Set f → Set f}
   getConstrsForTerm t = getConstrsForType =<< inferType t
 
   -- run a TC computation to arrive at the term under the binder for the pattern
-  withPattern : List (String × Arg Type) → List (Arg Pattern) → M Term → M Clause
-  withPattern tel ps t = Clause.clause tel ps <$> extendContext' (map proj₂ tel) t
+  withPattern : Telescope → List (Arg Pattern) → M Term → M Clause
+  withPattern tel ps t = Clause.clause tel ps <$> extendContext' tel t
 
   unifyWithGoal : Term → M ⊤
   unifyWithGoal t = do

@@ -50,13 +50,13 @@ applyNoConstraints : TC A → TC A
 applyNoConstraints x r@record { noConstraints = false } = x r
 applyNoConstraints x r@record { noConstraints = true  } = R'.noConstraints (x r)
 
-applyExtContext : List (Arg Term) → R.TC A → R.TC A
+applyExtContext : Telescope → R.TC A → R.TC A
 applyExtContext [] x       = x
-applyExtContext (t ∷ ts) x = applyExtContext ts $ R.extendContext t x
+applyExtContext (t ∷ ts) x = applyExtContext ts $ (uncurry R.extendContext) t x
 
 private
   liftTC : R.TC A → TC A
-  liftTC x = λ r → applyExtContext (map unAbs $ r .TCEnv.localContext) x
+  liftTC x = λ r → applyExtContext (r .TCEnv.localContext) x
 
   liftTC1 : (A → R.TC B) → A → TC B
   liftTC1 f a = liftTC (f a)

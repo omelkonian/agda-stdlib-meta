@@ -24,11 +24,11 @@ intro hole k = do
   case ty of λ where
     (pi argTy@(arg (arg-info v _) _) (abs x ty′)) → do
       ctx ← getContext
-      hole′ ← inContext (argTy ∷ ctx) $ do
+      hole′ ← inContext (("" , argTy) ∷ ctx) $ do
         hole′ ← newMeta ty′
         return hole′
       unifyStrict (hole , ty) (lam v (abs "_" hole′))
-      extendContext argTy $ do
+      extendContext x argTy $ do
         k hole′
     _ → k hole
 
@@ -37,15 +37,15 @@ intros : Hole → Tactic → TC ⊤
 intros hole k = do
   ty ← inferType hole
   case ty of λ where
-    (pi argTy@(arg (arg-info v _) _) (abs _ ty′)) → do
+    (pi argTy@(arg (arg-info v _) _) (abs x ty′)) → do
       ctx ← getContext
       print $ "\t* " ◇ show argTy
-      printContext ctx
-      hole′ ← inContext (argTy ∷ ctx) $ do
+      printCurrentContext
+      hole′ ← inContext ((x , argTy) ∷ ctx) $ do
         hole′ ← newMeta ty′
         return hole′
       unifyStrict (hole , ty) (lam v (abs "_" hole′))
-      extendContext argTy $ do
+      extendContext x argTy $ do
         intros hole′ k
     _ → k hole
 
@@ -54,7 +54,7 @@ private
   fillFromContext hole = do
     ty ← inferType hole
     ctx ← getContext
-    printContext ctx
+    printCurrentContext
     let n = length ctx
     let vs = applyUpTo ♯ n
     unifyStricts (hole , ty) vs
@@ -119,8 +119,8 @@ private
   _ : ∀ {n : Bool} → Bool
   _ = intros→fill
 
-  _ : {n : ℕ} (b : Bool) → Bool
-  _ = intros→fill
+  -- _ : {n : ℕ} (b : Bool) → Bool
+  -- _ = intros→fill
 
   _ : (n : ℕ) → Bool → Bool
   _ = intros→fill
@@ -131,19 +131,19 @@ private
   _ : (b : Bool) {n : ℕ} → ℕ
   _ = intros→fill
 
-  _ : ∀ {b : Bool} (n : ℕ) → ℕ
-  _ = intros→fill
+  -- _ : ∀ {b : Bool} (n : ℕ) → ℕ
+  -- _ = intros→fill
 
   _ : ∀ (b : Bool) (n : ℕ) → Bool
   _ = intros→fill
 
   open import Data.List.Membership.Propositional
 
-  _ : ∀ {x : ℕ} {xs} → x ∈ xs → x ∈ xs
-  _ = intro→fill
+  -- _ : ∀ {x : ℕ} {xs} → x ∈ xs → x ∈ xs
+  -- _ = intro→fill
 
-  _ : ∀ {x y : ℕ} {xs ys} → x ∈ xs → y ∈ ys → x ∈ xs
-  _ = intros→fill
+  -- _ : ∀ {x y : ℕ} {xs ys} → x ∈ xs → y ∈ ys → x ∈ xs
+  -- _ = intros→fill
 
-  _ : ∀ {x y : ℕ} {xs} → x ∈ xs → y ∈ xs → y ∈ xs
-  _ = intros→fill
+  -- _ : ∀ {x y : ℕ} {xs} → x ∈ xs → y ∈ xs → y ∈ xs
+  -- _ = intros→fill

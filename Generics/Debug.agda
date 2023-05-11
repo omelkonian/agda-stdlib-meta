@@ -20,7 +20,7 @@ open import Reflection.Meta
 
 open import Class.Show.Core
 open import Class.Show.Instances
-open import Class.Functor.Instances
+open import Class.Functor
 open import Class.Monad
 open import Class.Traversable.Core
 open import Class.Traversable.Instances
@@ -74,7 +74,7 @@ module Debug (v : String × ℕ) where
       go (i , ty) = print $ "\t" Str.++ show i Str.++ " : " Str.++ show ty
 
   printCurrentContext : TC ⊤
-  printCurrentContext = printContext =<< getContext
+  printCurrentContext = printContext =<< (Data.List.map proj₂ <$> getContext)
 
   -- ** definitions
   genSimpleDef : Name → Type → Term → TC ⊤
