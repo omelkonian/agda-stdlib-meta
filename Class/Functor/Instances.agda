@@ -23,27 +23,8 @@ instance
   Functor-Maybe : Functor Maybe
   Functor-Maybe ._<$>_ = M.map
 
-  FunctorLaws-Maybe : FunctorLaws Maybe
-  FunctorLaws-Maybe = λ where
-    .fmap-id → λ where (just _) → refl; nothing → refl
-    .fmap-∘  → λ where (just _) → refl; nothing → refl
-
   Functor-List : Functor List
   Functor-List ._<$>_ = L.map
-
-  FunctorLaws-List : FunctorLaws List
-  FunctorLaws-List = record {fmap-id = p; fmap-∘ = q}
-    where
-      p : ∀ {A : Type ℓ} (x : List A) → fmap id x ≡ x
-      p = λ where
-        [] → refl
-        (x ∷ xs) → cong (x ∷_) (p xs)
-
-      q : ∀ {A : Type ℓ} {B : Type ℓ′} {C : Type ℓ″} {f : B → C} {g : A → B} (x : List A) →
-        fmap (f ∘ g) x ≡ (fmap f ∘ fmap g) x
-      q {f = f}{g} = λ where
-        [] → refl
-        (x ∷ xs) → cong (f (g x) ∷_) (q xs)
 
   Functor-List⁺ : Functor List⁺
   Functor-List⁺ ._<$>_ = LNE.map
