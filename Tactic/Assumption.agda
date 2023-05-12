@@ -21,7 +21,7 @@ open import Generics
 instance
   _ = Functor-M
 
-solve : ⦃ _ : DebugOptions ⦄ → Term → Tactic
+solve : ⦃ TCOptions ⦄ → Term → Tactic
 solve t = initTac $ runSpeculative $ do
   inj₁ goal ← reader TCEnv.goal
     where _ → error1 "solve: Goal is not a term!"
@@ -37,7 +37,7 @@ assumption' = inDebugPath "assumption" do
     catch (unifyWithGoal (♯ k) >> debugLog ("Success with: " ∷ᵈ ♯ k ∷ᵈ [])) (λ _ → x))
     (logAndError1 "No valid assumption!") (downFrom $ length c)
 
-module _ ⦃ _ : DebugOptions ⦄ where
+module _ ⦃ _ : TCOptions ⦄ where
   macro
     assumption = initTac assumption'
     assumptionOpts = initTacOpts assumption'

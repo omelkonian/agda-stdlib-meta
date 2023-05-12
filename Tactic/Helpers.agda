@@ -5,6 +5,7 @@ open import Prelude
 open import Meta
 
 open import Data.Nat using () renaming (_≟_ to _≟ℕ_)
+open import Data.String using () renaming (_≟_ to _≟S_)
 open import Data.List using (map; zipWith)
 import Data.Sum
 
@@ -134,6 +135,13 @@ module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadErr
   getParamsAndIndices n =
     Data.Sum.[ (λ d → DataDef.params d ++ DataDef.indices d) , RecordDef.params ] <$> getDataOrRecordDef n
 
+  getFuel : String → M ℕ
+  getFuel s = do
+    fuels ← reader (λ where record { options = record { fuel = f } } → f )
+    case lookupᵇ (λ s s' → ⌊ s ≟S s' ⌋) fuels s of λ where
+      nothing  → error1 ("Key" <+> s <+> "doesn't exist in the fuels map")
+      (just f) → return f
+
   isSort : Term → M Bool
   isSort t = do
     (agda-sort _) ← normalise t
@@ -177,19 +185,21 @@ ITactic = TC ⊤
 initTacEnv : (TCEnv → TCEnv) → ITactic → Tactic
 initTacEnv f tac goal = (initTCEnvWithGoal goal) Reflection.>>= tac ∘ f
 
-initTacOpts : ITactic → DebugOptions → Tactic
-initTacOpts tac opts = initTacEnv (λ env → record env { debug = opts }) tac
+initTacOpts : ITactic → TCOptions → Tactic
+initTacOpts tac opts = initTacEnv (λ env → record env { options = opts }) tac
 
-initTac : ⦃ DebugOptions ⦄ → ITactic → Tactic
-initTac ⦃ opts ⦄ tac = initTacOpts tac opts
+module _ ⦃ opts : TCOptions ⦄ where
 
-initUnquoteWithGoal : ⦃ DebugOptions ⦄ → Term → TC ⊤ → UnquoteDecl
-initUnquoteWithGoal ⦃ opts ⦄ g unq = (initTCEnvWithGoal g) Reflection.>>= unq ∘ (λ env → record env { debug = opts })
+  initTac : ITactic → Tactic
+  initTac tac = initTacOpts tac opts
 
-initUnquote : ⦃ DebugOptions ⦄ → TC ⊤ → UnquoteDecl
-initUnquote ⦃ opts ⦄ unq = initUnquoteWithGoal ⦃ opts ⦄ unknown unq
+  initUnquoteWithGoal : Term → TC ⊤ → UnquoteDecl
+  initUnquoteWithGoal g unq = (initTCEnvWithGoal g) Reflection.>>= unq
+                            ∘ (λ env → record env { options = opts })
 
-module _ ⦃ _ : DebugOptions ⦄ where
+  initUnquote : TC ⊤ → UnquoteDecl
+  initUnquote unq = initUnquoteWithGoal unknown unq
+
   macro
     byTC : TC A → Tactic
     byTC comp = initTac ((comp >>= quoteTC) >>= unifyWithGoal)

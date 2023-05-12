@@ -86,7 +86,7 @@ module _ (transName : Name → Maybe Name) where
   toMapDiag p@(_ , arg _ p₁) p'@(_ , arg _ p₂) =
     (p NE.∷ [ p' ] , finishMatch (if ⌊ p₁ ≟-Pattern p₂ ⌋ then mapDiag (just p) else mapDiag nothing))
 
-module _ ⦃ _ : DebugOptions ⦄ where
+module _ ⦃ _ : TCOptions ⦄ where
   derive-DecEq : List (Name × Name) → UnquoteDecl
   derive-DecEq = derive-Class 0 (λ transName ps → cartesianProductWith (toMapDiag transName) ps ps)
 

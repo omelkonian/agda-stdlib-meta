@@ -65,7 +65,7 @@ module _ (transName : Name → Maybe Name) where
     return $ genShow n (L.map (uncurry showFromTerm) $ reverse typeList)
   patternToClause p = NE.[ p ] , error1 "Error: not a con!"
 
-module _ ⦃ _ : DebugOptions ⦄ where
+module _ ⦃ _ : TCOptions ⦄ where
   derive-Show : List (Name × Name) → UnquoteDecl
   derive-Show = derive-Class 0 (λ transName → L.map (patternToClause transName))
 

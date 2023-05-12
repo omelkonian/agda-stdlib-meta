@@ -16,3 +16,7 @@ open import Data.Nat hiding (_≟_; _≤_; _≤?_; _<_; _<?_; _≤ᵇ_; _≡ᵇ_
 open import Data.String using (String; _<+>_) public
 
 open import Relation.Binary.PropositionalEquality hiding (preorder; setoid; [_]; module ≡-Reasoning; decSetoid) public
+
+lookupᵇ : {A B : Set} → (A → A → Bool) → List (A × B) → A → Maybe B
+lookupᵇ f [] n = nothing
+lookupᵇ f ((k , v) ∷ l) n = if f k n then just v else lookupᵇ f l n

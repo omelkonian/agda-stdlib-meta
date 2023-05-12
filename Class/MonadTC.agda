@@ -31,6 +31,16 @@ data ReductionOptions : Set where
 reduceAll : ReductionOptions
 reduceAll = dontReduce []
 
+record TCOptions : Set where
+  field
+    debug : DebugOptions
+    fuel  : List (String × ℕ)
+
+defaultTCOptions : TCOptions
+defaultTCOptions = record
+  { debug = defaultDebugOptions
+  ; fuel  = [] }
+
 record TCEnv : Set where
   field
     normalisation  : Bool
@@ -40,7 +50,9 @@ record TCEnv : Set where
     globalContext  : Telescope
     localContext   : Telescope
     goal           : Term ⊎ Type
-    debug          : DebugOptions
+    options        : TCOptions
+
+  open TCOptions options public
 
 initTCEnvWithGoal : Term → R.TC TCEnv
 initTCEnvWithGoal goal = R.getContext <&> λ ctx → record
@@ -51,7 +63,7 @@ initTCEnvWithGoal goal = R.getContext <&> λ ctx → record
   ; globalContext  = ctx
   ; localContext   = []
   ; goal           = inj₁ goal
-  ; debug          = defaultDebugOptions
+  ; options        = defaultTCOptions
   }
 
 initTCEnv : R.TC TCEnv
@@ -188,7 +200,7 @@ module _ {M : ∀ {f} → Set f → Set f}
 
   debugLog : List ErrorPart → M ⊤
   debugLog es = do
-    record { debug = debug } ← ask
+    record { options = record { debug = debug } } ← ask
     if debug .DebugOptions.filter (debug .DebugOptions.path)
       then debugPrint (debugOptionsPath debug) (debug .DebugOptions.level)
              (debugPrintPrefix debug ∷ es)
@@ -200,13 +212,14 @@ module _ {M : ∀ {f} → Set f → Set f}
   debugLog1ᵐ : A → ⦃ _ : IsMErrorPart A ⦄ → M ⊤
   debugLog1ᵐ a = debugLogᵐ (a ∷ᵈᵐ []ᵐ)
 
-  withDebugOptions : DebugOptions → M A → M A
-  withDebugOptions opts x = local (λ where
-    env@record { debug = opts' } → record env { debug = specializeDebugOptions opts' opts }) x
+  -- withDebugOptions : DebugOptions → M A → M A
+  -- withDebugOptions opts x = local (λ where
+  --   env@record { debug = opts' } → record env { debug = specializeDebugOptions opts' opts }) x
 
   withAppendDebugPath : String → M A → M A
   withAppendDebugPath path x = local (λ where
-    env@record { debug = opts } → record env { debug = record opts { path = opts .DebugOptions.path ∷ʳ path } }) x
+    env@record { options = o@record { debug = opts } } → record env {
+      options = record o { debug = record opts { path = opts .DebugOptions.path ∷ʳ path } } }) x
 
   noConstraints : M A → M A
   noConstraints = local λ e → record e { noConstraints = true }

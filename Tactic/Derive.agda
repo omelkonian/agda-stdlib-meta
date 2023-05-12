@@ -75,8 +75,7 @@ genClassType arity dName wName = do
     modifyClassType (just n) (tel , ty) = tyView (tel , className ∙⟦ n ∙⟦ ty ⟧ ⟧)
 
 lookupName : List (Name × Name) → Name → Maybe Name
-lookupName [] n = nothing
-lookupName ((k , v) ∷ l) n = if ⌊ k ≟-Name n ⌋ then just v else lookupName l n
+lookupName = lookupᵇ (λ n n' → ⌊ n ≟-Name n' ⌋)
 
 -- Look at the constructors of the argument and return all types that
 -- recursively contain it. This isn't very clever right now.
@@ -116,7 +115,7 @@ module _ (arity : ℕ) (genCe : (Name → Maybe Name) → List SinglePattern →
       (λ cn → freshName (showName className S.++ "-" S.++ showName cn S.++ showName dName)) hClasses
     traverse ⦃ Functor-List ⦄ (deriveSingle (L.zip hClasses hClassNames) dName iName) (nothing ∷ L.map just hClasses)
 
-  derive-Class : ⦃ _ : DebugOptions ⦄ → List (Name × Name) → UnquoteDecl
+  derive-Class : ⦃ TCOptions ⦄ → List (Name × Name) → UnquoteDecl
   derive-Class l = initUnquoteWithGoal (className ∙) $
     declareAndDefineFuns =<< concat <$> traverse ⦃ Functor-List ⦄ helper l
     where

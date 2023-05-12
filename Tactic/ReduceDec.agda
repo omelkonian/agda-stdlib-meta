@@ -119,7 +119,9 @@ reduceDecTermWith tac r t = inDebugPath "reduceDec" do
   return (scheme , eq)
 
 reduceDecTerm : ReductionOptions → Term → TC (Term × Term)
-reduceDecTerm = reduceDecTermWith (tryConstrsWith' 5 assumption')
+reduceDecTerm r t = do
+  fuel ← getFuel "reduceDec/constrs"
+  reduceDecTermWith (tryConstrsWith' fuel assumption') r t
 
 reduceDec' : ReductionOptions → Term → TC Term
 reduceDec' r t = do
@@ -136,7 +138,7 @@ reduceDecInGoal r newGoal = do
   (scheme , eq) ← reduceDecTerm r goal
   unifyWithGoal $ quote subst ∙⟦ scheme ∣ quote sym ∙⟦ eq ⟧ ∣ newGoal ⟧
 
-module _ ⦃ _ : DebugOptions ⦄ where
+module _ ⦃ _ : TCOptions ⦄ where
   macro
     by-reduceDec : Term → Tactic
     by-reduceDec t = initTac $ reduceDec reduceAll t

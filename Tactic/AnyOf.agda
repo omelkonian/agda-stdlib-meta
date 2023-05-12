@@ -29,7 +29,7 @@ anyOfⁿ = inDebugPath "anyOf" ∘
   foldl (λ x n → catch (debugLog ("Attempting: " ∷ᵈ n ∷ᵈ []) >> unifyWithGoal (n ∙) >> debugLog ("Success with: " ∷ᵈ n ∷ᵈ [])) (λ _ → x))
     (logAndError1 "None of the provded terms solve the goal!")
 
-module _ ⦃ _ : DebugOptions ⦄ where
+module _ ⦃ _ : TCOptions ⦄ where
   anyOfᵗ : List Term → Tactic
   anyOfᵗ l = initTac $ anyOf' l
 

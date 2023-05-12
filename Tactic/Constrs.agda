@@ -51,7 +51,7 @@ tryConstrsWith' (suc depth) tac =
     constrs)
     (logAndError1 "No constructors were able to solve the goal!")
 
-module _ ⦃ _ : DebugOptions ⦄ where
+module _ ⦃ _ : TCOptions ⦄ where
   tryConstrsᵗ : ℕ → Tactic
   tryConstrsᵗ n = initTac $ tryConstrsWith' n (error1 "Leaf reached!")
 
