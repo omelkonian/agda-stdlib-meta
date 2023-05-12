@@ -2,10 +2,15 @@
 <html><head><meta charset="utf-8"><title>Tactic.Defaults</title><link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css'/><style>.github-fork-ribbon:before { background-color: #333; }</style><link rel="stylesheet" href="css/Agda.css"></head><body><a class='github-fork-ribbon'href='https://github.com/omelkonian/stdlib-meta/tree/master/Tactic/Defaults.agda'data-ribbon='Source code on Github' title='Source code on Github'>Source code on Github</a><pre class="Agda"><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Pragma">--safe</a> <a id="20" class="Pragma">--without-K</a> <a id="32" class="Symbol">#-}</a>
 <a id="36" class="Keyword">module</a> <a id="43" href="Tactic.Defaults.html" class="Module">Tactic.Defaults</a> <a id="59" class="Keyword">where</a>
 
-<a id="66" class="Keyword">open</a> <a id="71" class="Keyword">import</a> <a id="78" href="Reflection.Debug.html" class="Module">Reflection.Debug</a>
+<a id="66" class="Keyword">open</a> <a id="71" class="Keyword">import</a> <a id="78" href="Prelude.html" class="Module">Prelude</a>
 
-<a id="96" class="Comment">-- There should only ever be one instance, with this being convenient</a>
-<a id="166" class="Comment">-- to tweak all at once</a>
-<a id="190" class="Keyword">instance</a>
-  <a id="defaultDebugOptionsI"></a><a id="201" href="Tactic.Defaults.html#201" class="Function">defaultDebugOptionsI</a> <a id="222" class="Symbol">=</a> <a id="224" class="Keyword">record</a> <a id="231" href="Reflection.Debug.html#2474" class="Function">defaultDebugOptions</a> <a id="251" class="Symbol">{</a> <a id="253" href="Reflection.Debug.html#2405" class="Field">selection</a> <a id="263" class="Symbol">=</a> <a id="265" href="Reflection.Debug.html#1367" class="InductiveConstructor">All</a> <a id="269" class="Symbol">}</a>
+<a id="87" class="Keyword">open</a> <a id="92" class="Keyword">import</a> <a id="99" href="Class.MonadTC.html" class="Module">Class.MonadTC</a>
+<a id="113" class="Keyword">open</a> <a id="118" class="Keyword">import</a> <a id="125" href="Reflection.Debug.html" class="Module">Reflection.Debug</a>
+
+<a id="143" class="Comment">-- There should only ever be one instance, with this being convenient</a>
+<a id="213" class="Comment">-- to tweak all at once</a>
+<a id="237" class="Keyword">instance</a>
+  <a id="defaultTCOptionsI"></a><a id="248" href="Tactic.Defaults.html#248" class="Function">defaultTCOptionsI</a> <a id="266" class="Symbol">=</a> <a id="268" class="Keyword">record</a>
+    <a id="279" class="Symbol">{</a> <a id="281" href="Class.MonadTC.html#655" class="Field">debug</a> <a id="287" class="Symbol">=</a> <a id="289" class="Keyword">record</a> <a id="296" href="Reflection.Debug.html#2474" class="Function">defaultDebugOptions</a> <a id="316" class="Symbol">{</a> <a id="318" href="Reflection.Debug.html#2405" class="Field">selection</a> <a id="328" class="Symbol">=</a> <a id="330" href="Reflection.Debug.html#1367" class="InductiveConstructor">All</a> <a id="334" class="Symbol">}</a>
+    <a id="340" class="Symbol">;</a> <a id="342" href="Class.MonadTC.html#680" class="Field">fuel</a>  <a id="348" class="Symbol">=</a> <a id="350" class="Symbol">(</a><a id="351" class="String">&quot;reduceDec/constrs&quot;</a> <a id="371" href="Agda.Builtin.Sigma.html#218" class="InductiveConstructor Operator">,</a> <a id="373" class="Number">5</a><a id="374" class="Symbol">)</a> <a id="376" href="Agda.Builtin.List.html#182" class="InductiveConstructor Operator">∷</a> <a id="378" href="Agda.Builtin.List.html#167" class="InductiveConstructor">[]</a> <a id="381" class="Symbol">}</a>
 </pre></body></html>
