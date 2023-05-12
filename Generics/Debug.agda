@@ -65,16 +65,17 @@ module Debug (v : String × ℕ) where
       ∷ "}\n"
       ∷ [])
 
-  printContext : Context → TC ⊤
+  printContext : Telescope → TC ⊤
   printContext ctx = do
     print "\t----CTX----"
     void $ traverse go (enumerate ctx)
     where
-      go : Fin (length ctx) × Arg Type → TC ⊤
-      go (i , ty) = print $ "\t" Str.++ show i Str.++ " : " Str.++ show ty
+      go : Fin (length ctx) × String × Arg Type → TC ⊤
+      go (i , s , ty) = print $
+        "\t#" Str.++ show i Str.++ " " Str.++ s Str.++ " : " Str.++ show ty
 
   printCurrentContext : TC ⊤
-  printCurrentContext = printContext =<< (Data.List.map proj₂ <$> getContext)
+  printCurrentContext = printContext =<< getContext
 
   -- ** definitions
   genSimpleDef : Name → Type → Term → TC ⊤

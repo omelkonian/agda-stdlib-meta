@@ -42,8 +42,6 @@ private module _ {ℓ ℓ′} {A : Set ℓ} {B : Set ℓ′} ⦃ _ : DecEq A ⦄
 
   import Data.List.Membership.DecPropositional {A = A} _≟_ as DL
 
-
-
   -- NB: right-biased, e.g. nubBy ∣_∣ [-1,0,1] = [0,1]
   nubBy : (B → A) → List B → List B
   nubBy f [] = []

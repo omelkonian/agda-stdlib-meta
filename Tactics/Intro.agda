@@ -23,8 +23,8 @@ intro hole k = do
   ty ← inferType hole
   case ty of λ where
     (pi argTy@(arg (arg-info v _) _) (abs x ty′)) → do
-      ctx ← getContext
-      hole′ ← inContext (("" , argTy) ∷ ctx) $ do
+      printCurrentContext
+      hole′ ← extendContext x argTy $ do
         hole′ ← newMeta ty′
         return hole′
       unifyStrict (hole , ty) (lam v (abs "_" hole′))
@@ -38,10 +38,9 @@ intros hole k = do
   ty ← inferType hole
   case ty of λ where
     (pi argTy@(arg (arg-info v _) _) (abs x ty′)) → do
-      ctx ← getContext
       print $ "\t* " ◇ show argTy
       printCurrentContext
-      hole′ ← inContext ((x , argTy) ∷ ctx) $ do
+      hole′ ← extendContext x argTy $ do
         hole′ ← newMeta ty′
         return hole′
       unifyStrict (hole , ty) (lam v (abs "_" hole′))
@@ -54,7 +53,7 @@ private
   fillFromContext hole = do
     ty ← inferType hole
     ctx ← getContext
-    printCurrentContext
+    printContext ctx
     let n = length ctx
     let vs = applyUpTo ♯ n
     unifyStricts (hole , ty) vs
@@ -119,8 +118,8 @@ private
   _ : ∀ {n : Bool} → Bool
   _ = intros→fill
 
-  -- _ : {n : ℕ} (b : Bool) → Bool
-  -- _ = intros→fill
+  _ : {n : ℕ} (b : Bool) → Bool
+  _ = intros→fill
 
   _ : (n : ℕ) → Bool → Bool
   _ = intros→fill
@@ -131,19 +130,19 @@ private
   _ : (b : Bool) {n : ℕ} → ℕ
   _ = intros→fill
 
-  -- _ : ∀ {b : Bool} (n : ℕ) → ℕ
-  -- _ = intros→fill
+  _ : ∀ {b : Bool} (n : ℕ) → ℕ
+  _ = intros→fill
 
   _ : ∀ (b : Bool) (n : ℕ) → Bool
   _ = intros→fill
 
   open import Data.List.Membership.Propositional
 
-  -- _ : ∀ {x : ℕ} {xs} → x ∈ xs → x ∈ xs
-  -- _ = intro→fill
+  _ : ∀ {x : ℕ} {xs} → x ∈ xs → x ∈ xs
+  _ = intro→fill
 
-  -- _ : ∀ {x y : ℕ} {xs ys} → x ∈ xs → y ∈ ys → x ∈ xs
-  -- _ = intros→fill
+  _ : ∀ {x y : ℕ} {xs ys} → x ∈ xs → y ∈ ys → x ∈ xs
+  _ = intros→fill
 
-  -- _ : ∀ {x y : ℕ} {xs} → x ∈ xs → y ∈ xs → y ∈ xs
-  -- _ = intros→fill
+  _ : ∀ {x y : ℕ} {xs} → x ∈ xs → y ∈ xs → y ∈ xs
+  _ = intros→fill
