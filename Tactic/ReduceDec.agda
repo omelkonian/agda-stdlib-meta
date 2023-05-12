@@ -1,6 +1,6 @@
 {-# OPTIONS --safe --without-K #-}
 --------------------------------------------------------------------------------
--- reduceDec: looks for proofs of P to reduce ⌊ decP ⌋
+-- reduceDec: looks for proofs of P or ¬P to reduce ⌊ decP ⌋
 --------------------------------------------------------------------------------
 
 module Tactic.ReduceDec where
@@ -8,15 +8,13 @@ module Tactic.ReduceDec where
 open import Prelude
 open import Meta
 
-open import Generics
-
+open import Reflection.Tactic
+open import Reflection.Utils
+open import Reflection.Utils.TCI
 open import Relation.Nullary
 open import Relation.Nullary.Decidable
-open import Relation.Binary.PropositionalEquality hiding ([_])
-
-open import Tactic.Helpers
-open import Tactic.Constrs
 open import Tactic.Assumption
+open import Tactic.Constrs
 
 open import Class.Monad
 open import Class.MonadError.Instances
@@ -24,7 +22,7 @@ open import Class.MonadReader.Instances
 open import Class.MonadTC.Instances
 
 private
-  variable ℓ : Agda.Primitive.Level
+  variable ℓ : Level
            A : Set ℓ
 
 -- find all subterms satisfying the predicate (not under binders)

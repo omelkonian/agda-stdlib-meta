@@ -8,15 +8,15 @@ module Tactic.Assumption where
 open import Prelude
 open import Meta
 
-open import Class.Monad
 open import Class.Functor
+open import Class.Monad
 open import Class.MonadError.Instances
 open import Class.MonadReader.Instances
 open import Class.MonadTC.Instances
 
-open import Tactic.Helpers
-
-open import Generics
+open import Reflection.Tactic
+open import Reflection.Utils
+open import Reflection.Utils.TCI
 
 instance
   _ = Functor-M

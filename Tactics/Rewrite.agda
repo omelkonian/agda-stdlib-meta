@@ -1,35 +1,27 @@
 {-# OPTIONS -v rewrite:100 #-}
 module Tactics.Rewrite where
 
-open import Level using (Level)
-open import Function
-open import Data.Unit using (⊤; tt)
-open import Data.Product using (∃; _×_; _,_; -,_; proj₁; proj₂; map₁; map₂)
-open import Data.List
-open import Data.List.NonEmpty using (List⁺; _∷_)
+open import Prelude hiding (_^_; _≤_)
+
 open import Data.List.Membership.DecPropositional using (_∈?_)
+open import Data.List.NonEmpty using (List⁺; _∷_)
+open import Data.Maybe.Relation.Unary.Any using (just)
 open import Data.Nat hiding (_≟_; _^_)
 open import Data.Nat.Properties using (≤-refl; ≤-step)
-open import Data.Fin using (Fin)
-open import Data.Bool using (Bool; true; false; if_then_else_; _∨_)
-open import Data.Maybe using (Maybe; just; nothing; Is-just)
-open import Data.Maybe.Relation.Unary.Any using (just)
-
-open import Relation.Nullary
-open import Relation.Nullary.Decidable
-open import Relation.Binary.PropositionalEquality hiding ([_])
-
+open import Data.Product using (map₂)
 open import Reflection hiding (return; _>>=_; _>>_; _≟_)
-open import Reflection.Term hiding (_≟_)
-
-open import Generics
-open Debug ("rewrite" , 100)
+open import Reflection.Syntax
+open import Reflection.Tactic
+open import Reflection.Utils.Debug
+open import Relation.Nullary.Decidable
 
 open import Class.DecEq
 open import Class.Functor
 open import Class.Monad
 open import Class.Semigroup
 open import Class.Show
+
+open Debug ("rewrite" , 100)
 
 private variable ℓ : Level; A : Set ℓ
 

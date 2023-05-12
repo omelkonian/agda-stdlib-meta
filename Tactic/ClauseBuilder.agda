@@ -5,7 +5,6 @@ open import Prelude hiding ([_,_])
 open import Meta hiding (sort)
 
 import Data.List.NonEmpty as NE
-import Data.Nat
 open import Data.List using (zipWith)
 open import Data.Nat.Properties using (≤-totalOrder; ≤-decTotalOrder)
 open import Data.Product using (map₁)
@@ -16,15 +15,15 @@ open import Data.List.Sort using (SortingAlgorithm)
 open import Data.List.Sort.MergeSort using (mergeSort)
 open SortingAlgorithm ≤-decTotalOrder (mergeSort ≤-decTotalOrder) public
 
-open import Generics
+open import Reflection.Utils
+open import Reflection.Utils.TCI
 
-open import Tactic.Helpers
-
-open import Class.Traversable
+open import Class.DecEq
 open import Class.Functor
 open import Class.MonadError.Instances
-open import Class.MonadTC.Instances
 open import Class.MonadReader.Instances
+open import Class.MonadTC.Instances
+open import Class.Traversable
 
 module _ where
   open import Class.Monad hiding (Monad-List) public
@@ -59,7 +58,7 @@ multiSinglePattern : List String → Arg Pattern → SinglePattern
 multiSinglePattern s p = ((_, vArg unknown) <$> s) , p
 
 findIndexDefault : List ℕ → ℕ → ℕ → ℕ
-findIndexDefault l d a with filter (λ where (i , x) → x Data.Nat.≟ a) (zipWithIndex _,_ l)
+findIndexDefault l d a with filter (λ where (i , x) → x ≟ a) (zipWithIndex _,_ l)
 ... | []          = d
 ... | (i , _) ∷ _ = i
 
@@ -81,7 +80,7 @@ singlePatternFromPattern (arg i p) =
     appearingIndicesHelper (arg _ p ∷ ps) = appearingIndices p ++ appearingIndicesHelper ps
 
     normalisedIndexList : List ℕ
-    normalisedIndexList = sort $ deduplicate Data.Nat._≟_ $ appearingIndices p
+    normalisedIndexList = sort $ deduplicate _≟_ $ appearingIndices p
 
     replacePatternIndex : Pattern → Pattern
     replacePatternIndexHelper : List (Arg Pattern) → List (Arg Pattern)

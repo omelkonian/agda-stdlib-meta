@@ -8,15 +8,10 @@
 
 {-# OPTIONS -v allTactics:100 #-}
 {-# OPTIONS --safe #-}
-open import Meta
-
 module Tactic.Derive.DecEq where
 
 open import Prelude
-
-open import Reflection.Term using (_≟-Pattern_)
-
-open import Generics
+open import Meta
 
 import Data.List as L
 import Data.List.NonEmpty as NE
@@ -25,15 +20,19 @@ open import Relation.Nullary
 open import Relation.Nullary.Decidable
 open import Relation.Nullary.Product
 
-open import Class.DecEq.Core public
+open import Reflection.Tactic
+open import Reflection.Term using (_≟-Pattern_)
+open import Reflection.Utils
+open import Reflection.Utils.TCI
+
+open import Class.DecEq.Core
+open import Class.Functor
+open import Class.Monad
+open import Class.MonadTC.Instances
+open import Class.Traversable
 
 open import Tactic.ClauseBuilder
 open import Tactic.Derive (quote DecEq) (quote _≟_)
-
-open import Class.Functor
-open import Class.Traversable
-open import Class.Monad
-open import Class.MonadTC.Instances
 
 instance
   _ = ContextMonad-MonadTC

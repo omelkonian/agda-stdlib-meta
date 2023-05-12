@@ -1,51 +1,30 @@
 {-# OPTIONS --safe --without-K #-}
-module Tactic.Helpers where
+module Reflection.Utils.TCI where
 
 open import Prelude
 open import Meta
 
-open import Data.Nat using () renaming (_≟_ to _≟ℕ_)
-open import Data.String using () renaming (_≟_ to _≟S_)
-open import Data.List using (map; zipWith)
 import Data.Sum
+open import Data.List using (map; zipWith)
+open import Reflection.Utils
+open import Relation.Nullary.Decidable using (⌊_⌋)
 
-open import Generics
+open import Class.DecEq
 
-open import Relation.Nullary.Decidable hiding (map)
-open import Reflection.Syntax
-open import Reflection.Name using (_≟_)
-
-import Reflection
-
-open import Class.Traversable
 open import Class.Functor
 open import Class.Monad
 open import Class.MonadError.Instances
 open import Class.MonadReader.Instances
 open import Class.MonadTC.Instances
+open import Class.Traversable
 
 private
   variable a b c : Level
            A : Set a
            B : Set b
 
-zipWithIndex : (ℕ → A → B) → List A → List B
-zipWithIndex f l = zipWith f (upTo $ length l) l
-
-record DataDef : Set where
-  field
-    name : Name
-    constructors : List (Name × TypeView)
-    params : List (Abs (Arg Type))
-    indices : List (Abs (Arg Type))
-
-record RecordDef : Set where
-  field
-    name : Name
-    fields : List (Arg Name)
-    params : List (Abs (Arg Type))
-
-module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadError (List ErrorPart) M ⦄ ⦃ mre : MonadReader TCEnv M ⦄ ⦃ _ : MonadTC M ⦄ where
+module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadError (List ErrorPart) M ⦄
+         ⦃ mre : MonadReader TCEnv M ⦄ ⦃ _ : MonadTC M ⦄ where
 
   instance _ = Functor-M
 
@@ -138,7 +117,7 @@ module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadErr
   getFuel : String → M ℕ
   getFuel s = do
     fuels ← reader (λ where record { options = record { fuel = f } } → f )
-    case lookupᵇ (λ s s' → ⌊ s ≟S s' ⌋) fuels s of λ where
+    case lookupᵇ (λ s s' → ⌊ s ≟ s' ⌋) fuels s of λ where
       nothing  → error1 ("Key" <+> s <+> "doesn't exist in the fuels map")
       (just f) → return f
 
@@ -152,7 +131,7 @@ module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadErr
   isNArySort n t = do
     (tel , ty) ← viewAndReduceTy t
     b ← isSort ty
-    return (⌊ (length tel) ≟ℕ n ⌋ ∧ b)
+    return (⌊ (length tel) ≟ n ⌋ ∧ b)
 
   isDefT : Name → Term → M Bool
   isDefT n t = do
@@ -178,31 +157,3 @@ module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadErr
   applyWithVisibility n l = do
     (argTys , _) ← getType' n
     nameConstr n (zipWith (λ where (abs _ (arg i _)) → arg i) argTys l)
-
-ITactic : Set
-ITactic = TC ⊤
-
-initTacEnv : (TCEnv → TCEnv) → ITactic → Tactic
-initTacEnv f tac goal = (initTCEnvWithGoal goal) Reflection.>>= tac ∘ f
-
-initTacOpts : ITactic → TCOptions → Tactic
-initTacOpts tac opts = initTacEnv (λ env → record env { options = opts }) tac
-
-module _ ⦃ opts : TCOptions ⦄ where
-
-  initTac : ITactic → Tactic
-  initTac tac = initTacOpts tac opts
-
-  initUnquoteWithGoal : Term → TC ⊤ → UnquoteDecl
-  initUnquoteWithGoal g unq = (initTCEnvWithGoal g) Reflection.>>= unq
-                            ∘ (λ env → record env { options = opts })
-
-  initUnquote : TC ⊤ → UnquoteDecl
-  initUnquote unq = initUnquoteWithGoal unknown unq
-
-  macro
-    byTC : TC A → Tactic
-    byTC comp = initTac ((comp >>= quoteTC) >>= unifyWithGoal)
-
-    by : ITactic → Tactic
-    by = initTac

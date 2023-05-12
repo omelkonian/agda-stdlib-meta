@@ -1,32 +1,23 @@
 {-# OPTIONS -v try:100 #-}
 module Tactics.Try where
 
-open import Function using (_$_; case_of_; _∘_)
-open import Data.Unit using (⊤; tt)
+open import Prelude
+
 open import Data.List
-open import Data.Bool using (if_then_else_; Bool; true; false)
-open import Data.Product hiding (map)
-open import Data.Nat using (ℕ; suc; _+_)
-open import Data.Maybe using (Maybe; just; nothing)
-open import Data.String using (String)
-
-open import Relation.Nullary
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
-
 open import Reflection hiding (return; _>>=_; _>>_; _≟_)
-open import Reflection.Meta hiding (_≟_)
-open import Reflection.Argument hiding (map)
-open import Reflection.Abstraction hiding (map)
-open import Reflection.Term hiding (_≟_)
+open import Reflection.Syntax
+open import Reflection.Utils
+open import Reflection.Utils.Debug
+open import Reflection.Utils.TCM
+open import Relation.Nullary
 
-open import Generics
-open Debug ("try" , 100)
-
-open import Class.Show
-open import Class.Semigroup
+open import Class.DecEq
 open import Class.Functor
 open import Class.Monad
-open import Class.DecEq
+open import Class.Semigroup
+open import Class.Show
+
+open Debug ("try" , 100)
 
 _∙_ : Term → Args Term → TC Term
 t ∙ [] = return t

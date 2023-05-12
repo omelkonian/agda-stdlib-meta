@@ -8,15 +8,11 @@ module Tactic.AnyOf where
 open import Prelude
 open import Meta
 
-import Data.List
-
-open import Generics
-
-open import Tactic.Helpers
+open import Reflection.Utils.TCI
+open import Reflection.Tactic
 
 open import Class.Monad
 open import Class.MonadError.Instances
-open import Class.MonadReader.Instances
 open import Class.MonadTC.Instances
 
 anyOf' : List Term → ITactic

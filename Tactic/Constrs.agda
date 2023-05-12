@@ -9,23 +9,23 @@ module Tactic.Constrs where
 open import Prelude
 open import Meta
 
-import Data.List
+open import Data.List
 
-open import Generics
+open import Reflection.Tactic
+open import Reflection.Utils
+open import Reflection.Utils.TCI
 
-open import Tactic.Helpers
-
-open import Class.Traversable
-open import Class.Monad
 open import Class.Functor.Instances
+open import Class.Monad
 open import Class.MonadError.Instances
 open import Class.MonadReader.Instances
 open import Class.MonadTC.Instances
+open import Class.Traversable
 
 instance _ = Functor-M ⦃ Class.Monad.Monad-TC ⦄
 
 applyConstrToUnknowns : Name → Type → Term
-applyConstrToUnknowns n ty = con n (Data.List.map toUnknown $ argTys ty)
+applyConstrToUnknowns n ty = con n (map toUnknown $ argTys ty)
   where
     toUnknown : Arg Type → Arg Type
     toUnknown (arg i _) = arg i unknown

@@ -13,7 +13,9 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 open import Reflection hiding (_>>=_; _>>_)
 open import Reflection.Meta
 
-open import Generics
+open import Reflection.Utils.Debug
+open import Reflection.Syntax
+open import Reflection.Utils
 open Debug ("DeriveLenses" , 100)
 
 open import Class.Show.Core

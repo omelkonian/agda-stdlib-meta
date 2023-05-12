@@ -1,21 +1,18 @@
 {-# OPTIONS -v Generics:100 #-}
 module Tactics.Intro where
 
-open import Function using (case_of_; _$_)
-open import Data.Unit using (⊤)
-open import Data.Product using (_,_)
-open import Data.List using (_∷_; length; applyUpTo)
-open import Data.Nat using (ℕ)
-open import Data.Bool using (Bool)
+open import Prelude
 
 open import Class.Functor
-open import Class.Semigroup
 open import Class.Monad
+open import Class.Semigroup
 open import Class.Show
 
-open import Generics
 open import Reflection hiding (_>>=_; _>>_; return)
-open import Reflection.Meta
+open import Reflection.Syntax
+open import Reflection.Tactic
+open import Reflection.Utils.Debug
+open import Reflection.Utils.TCM
 open Debug ("Generics.Intros" , 100)
 
 intro : Hole → Tactic → TC ⊤

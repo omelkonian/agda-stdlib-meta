@@ -1,21 +1,20 @@
 {-# OPTIONS -v eta:100 #-}
 module Tactics.Eta where
 
-open import Function
-open import Data.Unit
-open import Data.Product hiding (map)
+open import Prelude
+
 open import Data.List
-open import Data.Nat
 open import Data.Fin
 
-open import Reflection hiding (return; _>>=_; _>>_)
-open import Reflection.Term
-
-open import Generics
-open Debug ("eta" , 100)
 open import Class.Monad
-open import Class.Show
 open import Class.Semigroup
+open import Class.Show
+open import Reflection hiding (return; _>>=_; _>>_)
+open import Reflection.Syntax hiding (toℕ)
+open import Reflection.Utils
+open import Reflection.Utils.Debug
+
+open Debug ("eta" , 100)
 
 saturate : Term → Args Type → TC Term
 saturate f as = case f of λ where

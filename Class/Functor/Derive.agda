@@ -3,7 +3,7 @@ module Class.Functor.Derive where
 
 open import Agda.Primitive
 open import Class.Functor.Core
-open import Generics
+open import Reflection.Utils.Debug
 
 instance
   Derive-Functor : Derivable¹ Functor

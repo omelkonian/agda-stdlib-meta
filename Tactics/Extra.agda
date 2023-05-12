@@ -1,34 +1,28 @@
 {-# OPTIONS -v extra:100 #-}
 module Tactics.Extra where
 
-open import Level using (Level; lift)
-open import Function using (_∋_; id; _$_; const)
+open import Prelude
 
-open import Data.Unit using (⊤; tt)
-open import Data.Product using (∃; _×_; _,_; -,_; proj₁; proj₂; map₁; map₂)
-open import Data.Bool using (Bool; true; false; if_then_else_; _∨_)
-open import Data.List using (List; drop; map; [_]; [])
-
-open import Data.Nat as Nat using (ℕ)
-open import Data.Nat.Properties using (≤-refl; ≤-step)
-open import Data.Integer as Int using (ℤ)
 open import Data.Fin using (Fin; toℕ)
-open import Data.String using (String)
+open import Data.Integer as Int using (ℤ)
+open import Data.List using (List; drop; map; [_]; [])
+open import Data.Nat as Nat using (ℕ)
 open import Data.Vec using (Vec; []; _∷_)
 
-open import Relation.Binary.PropositionalEquality using (refl; _≡_)
-
 open import Reflection hiding (return; _>>=_; _>>_; _≟_)
-open import Reflection.Term hiding (_≟_)
+open import Reflection.Syntax hiding (toℕ)
+open import Reflection.Tactic
+open import Reflection.Utils
+open import Reflection.Utils.Debug
+open import Reflection.Utils.TCI
 
-open import Generics
-open Debug ("extra" , 100)
-
+open import Class.DecEq
 open import Class.Functor
 open import Class.Monad
 open import Class.Semigroup
 open import Class.Show
-open import Class.DecEq
+
+open Debug ("extra" , 100)
 
 macro
   ∶t : Name → Hole → TC ⊤

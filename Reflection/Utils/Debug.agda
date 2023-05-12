@@ -2,7 +2,7 @@
 -- ** Errors, debugging
 
 {-# OPTIONS --safe --without-K #-}
-module Generics.Debug where
+module Reflection.Utils.Debug where
 
 open import Level using (Level)
 open import Function using (_∘_; _$_)
@@ -24,8 +24,6 @@ open import Class.Functor
 open import Class.Monad
 open import Class.Traversable.Core
 open import Class.Traversable.Instances
-
-open import Generics.Core
 
 private variable
   ℓ : Level

@@ -21,21 +21,19 @@ module Tactic.Derive (className : Name) (projName : Name) where
 
 open import Prelude
 
-open import Reflection.Name using () renaming (_≟_ to _≟-Name_)
 open import Agda.Builtin.Reflection using () renaming (primShowQName to showName)
 
-open import Generics
-
-open import Data.Maybe using (fromMaybe)
 import Data.List as L
 import Data.List.NonEmpty as NE
 import Data.String as S
-
+open import Data.Maybe using (fromMaybe)
+open import Reflection.Tactic
+open import Reflection.Utils
+open import Reflection.Utils.TCI
 open import Relation.Nullary.Decidable
-
 open import Tactic.ClauseBuilder
-open import Tactic.Helpers
 
+open import Class.DecEq
 open import Class.Monad
 open import Class.Traversable
 open import Class.Functor
@@ -75,18 +73,18 @@ genClassType arity dName wName = do
     modifyClassType (just n) (tel , ty) = tyView (tel , className ∙⟦ n ∙⟦ ty ⟧ ⟧)
 
 lookupName : List (Name × Name) → Name → Maybe Name
-lookupName = lookupᵇ (λ n n' → ⌊ n ≟-Name n' ⌋)
+lookupName = lookupᵇ (λ n n' → ⌊ n ≟ n' ⌋)
 
 -- Look at the constructors of the argument and return all types that
 -- recursively contain it. This isn't very clever right now.
 genMutualHelpers : Name → TC (List Name)
 genMutualHelpers n = do
   tys ← L.map (unArg ∘ unAbs) <$> (L.concatMap (proj₁ ∘ viewTy ∘ proj₂) <$> getConstrs n)
-  return $ deduplicate _≟-Name_ $ L.mapMaybe helper tys
+  return $ deduplicate _≟_ $ L.mapMaybe helper tys
   where
     helper : Type → Maybe Name
     helper (def n' args) =
-      if L.any (λ where (arg _ (def n'' _)) → ⌊ n ≟-Name n'' ⌋ ; _ → false) args
+      if L.any (λ where (arg _ (def n'' _)) → ⌊ n ≟ n'' ⌋ ; _ → false) args
       then just n' else nothing
     helper _ = nothing
 

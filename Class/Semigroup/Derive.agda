@@ -2,7 +2,7 @@
 module Class.Semigroup.Derive where
 
 open import Class.Semigroup.Core
-open import Generics
+open import Reflection.Utils.Debug
 
 instance
   Derive-Semigroup : Derivable Semigroup

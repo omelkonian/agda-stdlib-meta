@@ -2,24 +2,17 @@
 {-# OPTIONS -v allTactics:100 #-}
 module Tactic.Case where
 
-open import Data.Sum
-open import Data.List
-open import Data.Product
-open import Function
-open import Data.Maybe using (Maybe; just; from-just)
+open import Prelude
+open import Meta
 
-open import Tactic.Helpers
+open import Data.List using (map)
+
+open import Reflection.Tactic
+open import Reflection.Utils.TCI
 open import Tactic.ClauseBuilder
 
-open import Generics
-
-open import Reflection.Syntax
 open import Class.Functor
-open import Class.Monad
 open import Class.MonadTC
-open import Reflection.TCI
-
-open import Meta
 
 open MonadTC ⦃...⦄
 
@@ -33,7 +26,7 @@ open ClauseExprM
 matchInductive : Type → (SinglePattern → TC (ClauseExpr ⊎ Maybe Term)) → TC ClauseExpr
 matchInductive ty rhs = do
   ps ← constructorPatterns' ty
-  matchExprM (Data.List.map (λ p → p , rhs p) ps)
+  matchExprM (map (λ p → p , rhs p) ps)
 
 genMatchingClauses : Type → TC Term → TC ClauseExpr
 genMatchingClauses ty x = matchInductive ty (λ _ → (inj₂ ∘ just) <$> x)

@@ -1,15 +1,12 @@
 module Tactics.Existentials where
 
-open import Function
-open import Data.Product using (∃; _×_; _,_; -,_; proj₁; proj₂; map₁; map₂)
-open import Data.Nat as Nat using (ℕ; suc; _∸_)
-open import Data.List as L using (reverse; upTo; length)
-open import Data.String using (String)
+open import Prelude
 
 open import Reflection hiding (return; _>>=_; _>>_; _≟_)
-open import Reflection.Term hiding (_≟_)
 
-open import Generics
+open import Reflection.Syntax
+open import Reflection.Tactic
+open import Reflection.Utils
 
 open import Class.Functor
 open import Class.Monad

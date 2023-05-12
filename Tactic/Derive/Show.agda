@@ -2,32 +2,28 @@
 
 {-# OPTIONS -v allTactics:100 #-}
 {-# OPTIONS --safe #-}
-open import Meta
-
 module Tactic.Derive.Show where
 
 open import Prelude
-open import Agda.Builtin.Reflection using (primShowQName)
+open import Meta
 
-open import Generics
+open import Agda.Builtin.Reflection using (primShowQName)
 
 import Data.List as L
 import Data.List.NonEmpty as NE
+import Reflection as R
 open import Data.String using (fromList; toList) renaming (_++_ to _++S_)
-import Data.Char as C
-import Reflection
-
+open import Reflection.Tactic
 open import Relation.Nullary.Negation
 
+open import Class.DecEq
+open import Class.Functor
+open import Class.MonadTC.Instances
 open import Class.Show.Core
+open import Class.Traversable
 
 open import Tactic.ClauseBuilder
 open import Tactic.Derive (quote Show) (quote show)
-
-open import Class.Traversable
-open import Class.Functor
-open import Class.Monad
-open import Class.MonadTC.Instances
 
 instance
   _ = ContextMonad-MonadTC
@@ -37,10 +33,10 @@ open ClauseExprM
 sLit = Term.lit ∘ Agda.Builtin.Reflection.Literal.string
 
 showName : Name → String
-showName n = let n' = Reflection.showName n in dropModulePrefix n'
+showName n = let n' = R.showName n in dropModulePrefix n'
   where
     dropModulePrefix : String → String
-    dropModulePrefix s = fromList $ reverse $ takeWhile (¬? ∘ ('.' C.≟_)) $ reverse $ toList s
+    dropModulePrefix s = fromList $ reverse $ takeWhile (¬? ∘ ('.' ≟_)) $ reverse $ toList s
 
 wrapWithPars : String → String
 wrapWithPars s = "(" ++S s ++S ")"

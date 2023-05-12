@@ -2,7 +2,7 @@
 module Class.DecEq.Derive where
 
 open import Class.DecEq.Core
-open import Generics
+open import Reflection.Utils.Debug
 
 instance
   Derive-DecEq : Derivable DecEq
