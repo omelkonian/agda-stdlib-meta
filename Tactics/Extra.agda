@@ -3,7 +3,6 @@ module Tactics.Extra where
 
 open import Prelude
 
-open import Data.Fin using (Fin; toℕ)
 open import Data.Integer as Int using (ℤ)
 open import Data.List using (List; drop; map; [_]; [])
 open import Data.Nat as Nat using (ℕ)
@@ -204,7 +203,7 @@ mkCase n n→ty mkT = do
         itys = enumerate tys
 
         cArgsᵖ : Args Pattern
-        cArgsᵖ = map (λ (i , at) → fmap (const $ var $ toℕ i) at) itys
+        cArgsᵖ = map (λ (i , at) → fmap (const $ var i) at) itys
       print $ "cArgs: " ◇ show cArgsᵖ
       t ← mkT tel
       print $ "t: " ◇ show t

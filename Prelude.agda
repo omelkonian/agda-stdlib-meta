@@ -20,3 +20,12 @@ open import Relation.Binary.PropositionalEquality hiding (preorder; setoid; [_];
 lookupᵇ : {A B : Set} → (A → A → Bool) → List (A × B) → A → Maybe B
 lookupᵇ f [] n = nothing
 lookupᵇ f ((k , v) ∷ l) n = if f k n then just v else lookupᵇ f l n
+
+open import Data.Fin
+open import Data.List
+
+zipWithIndex : {A B : Set} → (ℕ → A → B) → List A → List B
+zipWithIndex f l = zipWith f (upTo $ length l) l
+
+enumerate : {A : Set} → List A → List (ℕ × A)
+enumerate = zipWithIndex _,_

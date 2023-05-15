@@ -1,5 +1,8 @@
 {-# OPTIONS --safe --without-K #-}
-{-# OPTIONS -v allTactics:100 #-}
+--------------------------------------------------------------------------------
+-- case: pattern-match on the first term, continue with the second tactic
+--------------------------------------------------------------------------------
+
 module Tactic.Case where
 
 open import Prelude

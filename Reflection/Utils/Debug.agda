@@ -4,19 +4,13 @@
 {-# OPTIONS --safe --without-K #-}
 module Reflection.Utils.Debug where
 
-open import Level using (Level)
-open import Function using (_∘_; _$_)
+open import Prelude
 
-open import Data.Unit using (⊤)
-open import Data.String as Str using (String)
-open import Data.List using ([]; _∷_; [_]; length; List; allFin; zip)
-open import Data.Product using (_×_; proj₁; proj₂; _,_)
-open import Data.Nat using (ℕ)
+import Data.String as Str
 open import Data.Fin using (Fin)
 
 open import Reflection hiding (_>>_; _>>=_)
 open import Reflection.Term
-open import Reflection.Meta
 
 open import Class.Show.Core
 open import Class.Show.Instances
@@ -34,9 +28,6 @@ error s = typeError [ strErr s ]
 
 _IMPOSSIBLE_ : TC A
 _IMPOSSIBLE_ = error "IMPOSSIBLE"
-
-enumerate : (xs : List A) → List (Fin (length xs) × A)
-enumerate xs = zip (allFin $ length xs) xs
 
 module Debug (v : String × ℕ) where
   -- i.e. set {-# OPTIONS -v v₁:v₂ #-} to enable such messages in the **debug** buffer.
@@ -68,7 +59,7 @@ module Debug (v : String × ℕ) where
     print "\t----CTX----"
     void $ traverse go (enumerate ctx)
     where
-      go : Fin (length ctx) × String × Arg Type → TC ⊤
+      go : ℕ × String × Arg Type → TC ⊤
       go (i , s , ty) = print $
         "\t#" Str.++ show i Str.++ " " Str.++ s Str.++ " : " Str.++ show ty
 

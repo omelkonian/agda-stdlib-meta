@@ -38,9 +38,6 @@ record RecordDef : Set where
     fields : List (Arg Name)
     params : List (Abs (Arg Type))
 
-zipWithIndex : (ℕ → A → B) → List A → List B
-zipWithIndex f l = zipWith f (upTo $ length l) l
-
 absName : Abs A → String
 absName (abs s x) = s
 

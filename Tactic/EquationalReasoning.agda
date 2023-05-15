@@ -1,4 +1,7 @@
 {-# OPTIONS --safe --without-K #-}
+--------------------------------------------------------------------------------
+-- equational reasoning that can use tactics at each step
+--------------------------------------------------------------------------------
 
 module Tactic.EquationalReasoning where
 
