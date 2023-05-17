@@ -6,7 +6,7 @@
 module Tactic.Eta where
 
 open import Prelude
-open import Meta hiding (toℕ)
+open import Meta
 
 open import Data.List
 open import Data.Fin

@@ -4,9 +4,10 @@ module Reflection.Debug where
 
 open import Prelude hiding (⊤; _∧_; _∨_; filter)
 
-import Data.Bool
-import Data.String
-open import Data.List hiding (_++_; filter)
+import Data.Bool as B
+import Data.String as S
+open import Data.Char
+open import Data.List using (map)
 
 open import Relation.Nullary.Decidable using (⌊_⌋)
 
@@ -18,8 +19,7 @@ private
     A : Set a
 
 record IsErrorPart (A : Set) : Set where
-  field
-    toErrorPart : A → ErrorPart
+  field toErrorPart : A → ErrorPart
 
 open IsErrorPart ⦃...⦄ public
 
@@ -73,10 +73,10 @@ module Filter where
 
   private
     _≣_ : String → String → Bool
-    s ≣ s' = ⌊ s Data.String.≟ s' ⌋
+    s ≣ s' = ⌊ s S.≟ s' ⌋
 
   contains : String → Filter
-  contains s l = foldl (λ acc s' → acc Data.Bool.∨ s ≣ s') false l
+  contains s l = foldl (λ acc s' → acc B.∨ s ≣ s') false l
 
   noneOf : List String → Filter
   noneOf [] = ⊤
@@ -88,7 +88,7 @@ module Filter where
   ... | nothing = false
 
   beginsWith : String → Filter
-  beginsWith s l with Data.List.head l
+  beginsWith s l with head l
   ... | just x  = s ≣ x
   ... | nothing = false
 
@@ -98,16 +98,18 @@ record DebugOptions : Set where
     selection : DebugSelection
     filter    : Filter
     level     : ℕ
+    prefix    : Char
 
 defaultDebugOptions : DebugOptions
-defaultDebugOptions = record { path = []; selection = All; filter = Filter.⊤; level = 100 }
+defaultDebugOptions = record
+  { path = []; selection = All; filter = Filter.⊤; level = 100; prefix = '|' }
 
 specializeDebugOptions : DebugOptions → DebugOptions → DebugOptions
 specializeDebugOptions record { path = path₁ } opts@record { path = path₂ } =
-  record opts { path = path₁ Data.List.++ path₂ }
+  record opts { path = path₁ ++ path₂ }
 
 debugOptionsPath : DebugOptions → String
-debugOptionsPath record { path = path ; selection = FullPath } = Data.String.intersperse "/" path
+debugOptionsPath record { path = path ; selection = FullPath } = S.intersperse "/" path
 debugOptionsPath record { path = path ; selection = Last } with last path
 ... | just x  = x
 ... | nothing = ""
@@ -115,4 +117,4 @@ debugOptionsPath record { path = path ; selection = All } = "allTactics"
 debugOptionsPath record { path = path ; selection = Custom f } = f path
 
 debugPrintPrefix : DebugOptions → ErrorPart
-debugPrintPrefix record { path = path } = strErr (Data.String.replicate (Data.List.length path) '⎸')
+debugPrintPrefix o = let open DebugOptions o in strErr (S.replicate (length path) prefix)

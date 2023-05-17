@@ -91,6 +91,12 @@ instance
   DecEq-Name = DecEq _ ∋ record {M}
     where import Reflection.Name as M
 
+  DecEq-Literal = DecEq _ ∋ record {M}
+    where import Reflection.Literal as M
+
+  DecEq-Meta = DecEq _ ∋ record {M}
+    where import Reflection.Meta as M
+
   DecEq-Term = DecEq _ ∋ record {M}
     where import Reflection.Term as M
 
@@ -100,3 +106,9 @@ instance
 
   DecEq-Vis = DecEq _ ∋ record {M}
     where import Reflection.Argument.Visibility as M
+
+  DecEq-Modality = DecEq _ ∋ record {M}
+    where import Reflection.Argument.Modality as M
+
+  DecEq-ArgInfo = DecEq _ ∋ record {M}
+    where import Reflection.Argument.Information as M

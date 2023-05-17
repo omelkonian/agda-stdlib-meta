@@ -11,10 +11,10 @@ open import Reflection.Definition hiding (_≟_) public
 open import Reflection.Meta hiding (_≟_; _≈_; _≈?_) public
 open import Reflection.Abstraction using (unAbs) public
 
-open import Reflection.Argument.Visibility using (Visibility) public
 open import Reflection.Abstraction using (unAbs) public
 open import Reflection.Argument using (vArg; hArg; iArg; unArg; _⟨∷⟩_; map-Args) public
 open import Reflection using (Term; Type; Name; data-cons; pi; abs; Abs; Arg; Clause; data-type; record-type; var; con; def; lam; pat-lam; arg; agda-sort; lit; meta; unknown; Pattern; strErr; ErrorPart; arg-info; visible; hidden; instance′; Definition) public
+open import Agda.Builtin.Reflection using (ArgInfo; Modality; Visibility; Literal; Meta) public
 
 open import Reflection using (hidden; instance′; TC)
 

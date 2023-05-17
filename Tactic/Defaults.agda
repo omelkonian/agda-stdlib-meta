@@ -10,5 +10,5 @@ open import Reflection.Debug
 -- to tweak all at once
 instance
   defaultTCOptionsI = record
-    { debug = record defaultDebugOptions { selection = All }
+    { debug = record defaultDebugOptions { prefix = '┃' } -- ┃⎸
     ; fuel  = ("reduceDec/constrs" , 5) ∷ [] }

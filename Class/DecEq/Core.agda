@@ -12,11 +12,12 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 record DecEq {ℓ} (A : Type ℓ) : Type ℓ where
   field _≟_ : DecidableEquality A
 
-  _==_ : A → A → Bool
+  _==_ _≡ᵇ_ : A → A → Bool
   x == y = ⌊ x ≟ y ⌋
+  _≡ᵇ_ = _==_
 
   _≠_ : A → A → Bool
   x ≠ y = not (x == y)
 
-  infix 4 _≟_ _==_ _≠_
+  infix 4 _≟_ _≡ᵇ_ _==_ _≠_
 open DecEq ⦃...⦄ public

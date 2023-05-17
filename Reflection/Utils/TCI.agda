@@ -118,8 +118,7 @@ module NewMeta where
   unifyStrict (hole , ty) x = withAppendDebugPath "unifyStrict" do
     debugLog (hole ∷ᵈ " :=? " ∷ᵈ x ∷ᵈ [])
     m ← newMeta ty
-    noConstraints $
-      unify m x >> unify hole m
+    noConstraints $ unify m x >> unify hole m
     debugLog (hole ∷ᵈ " :=  " ∷ᵈ x ∷ᵈ [])
 
 printTerm : String → Term → M ⊤
