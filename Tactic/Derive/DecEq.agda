@@ -42,8 +42,14 @@ open ClauseExprM
 `yes x = quote _because_ ◆⟦ quote true  ◆ ∣ quote ofʸ ◆⟦ x ⟧ ⟧
 `no  x = quote _because_ ◆⟦ quote false ◆ ∣ quote ofⁿ ◆⟦ x ⟧ ⟧
 
-map' : ∀ {p q} {P : Set p} {Q : Set q} → P ⇔ Q → Dec P → Dec Q
-map' record { to = to ; from = from } = map′ to from
+-- We take the Dec P argument first to improve type checking performance.
+-- It's easy to infer the type of P from this argument and we need to know
+-- P to be able to check the pattern lambda generated for the P → Q direction
+-- of the isomorphism. Having the isomorphism first would cause the type checker
+-- to go back and forth between the pattern lambda and the Dec P argument,
+-- inferring just enough of the type of make progress on the lambda.
+map' : ∀ {p q} {P : Set p} {Q : Set q} → Dec P → P ⇔ Q → Dec Q
+map' d record { to = to ; from = from } = map′ to from d
 
 module _ (transName : Name → Maybe Name) where
 
@@ -62,7 +68,7 @@ module _ (transName : Name → Maybe Name) where
   mapDiag nothing          = return $ `no `λ⦅ [ ("" , vArg?) ] ⦆∅
   mapDiag (just p@(l , _)) = let k = length l in do
     typeList ← traverse ⦃ Functor-List ⦄ inferType (applyDownFrom ♯ (length l))
-    return $ quote map' ∙⟦ genEquiv k ∣ genPf k (L.map eqFromTerm typeList) ⟧
+    return $ quote map' ∙⟦ genPf k (L.map eqFromTerm typeList) ∣ genEquiv k ⟧
     where
       genPf : ℕ → List (Term → Term → Term) → Term
       genPf k []      = `yes (quote tt ◆)
