@@ -2,7 +2,7 @@
 
 module Reflection.Debug where
 
-open import Prelude hiding (⊤; _∧_; _∨_; filter)
+open import MetaPrelude hiding (⊤; _∧_; _∨_; filter)
 
 import Data.Bool as B
 import Data.String as S
@@ -62,14 +62,14 @@ Filter : Set
 Filter = List String → Bool
 
 module Filter where
-  open import Algebra
+  open import Algebra.Lattice
   open import Data.Bool.Properties
   import Algebra.Function
 
   Filter-Alg : BooleanAlgebra _ _
   Filter-Alg = Algebra.Function.hom (List String) ∨-∧-booleanAlgebra
 
-  open Algebra.BooleanAlgebra Filter-Alg public
+  open BooleanAlgebra Filter-Alg public
 
   private
     _≣_ : String → String → Bool

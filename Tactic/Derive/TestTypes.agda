@@ -2,7 +2,7 @@
 {-# OPTIONS -v allTactics:100 #-}
 module Tactic.Derive.TestTypes where
 
-open import Prelude
+open import MetaPrelude
 open import Data.Fin
 open import Meta
 

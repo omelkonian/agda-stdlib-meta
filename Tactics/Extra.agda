@@ -1,14 +1,14 @@
 {-# OPTIONS -v extra:100 #-}
 module Tactics.Extra where
 
-open import Prelude
+open import MetaPrelude
 
 open import Data.Integer as Int using (ℤ)
 open import Data.List using (List; drop; map; [_]; [])
 open import Data.Nat as Nat using (ℕ)
 open import Data.Vec using (Vec; []; _∷_)
 
-open import Reflection hiding (return; _>>=_; _>>_; _≟_)
+open import Reflection hiding (_>>=_; _>>_; _≟_)
 open import Reflection.Syntax
 open import Reflection.Tactic
 open import Reflection.Utils

@@ -5,7 +5,7 @@
 
 module Tactic.AnyOf where
 
-open import Prelude
+open import MetaPrelude
 open import Meta
 
 open import Reflection.Utils.TCI

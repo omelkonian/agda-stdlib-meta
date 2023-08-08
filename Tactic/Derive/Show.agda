@@ -4,7 +4,7 @@
 {-# OPTIONS --safe #-}
 module Tactic.Derive.Show where
 
-open import Prelude
+open import MetaPrelude
 open import Meta
 
 open import Agda.Builtin.Reflection using (primShowQName)
@@ -15,6 +15,7 @@ import Reflection as R
 open import Data.String using (fromList; toList) renaming (_++_ to _++S_)
 open import Reflection.Tactic
 open import Relation.Nullary.Negation
+open import Relation.Nullary.Decidable
 
 open import Class.DecEq
 open import Class.Functor

@@ -2,19 +2,34 @@
 
 module Reflection.Syntax where
 
-open import Prelude
+open import MetaPrelude
 
-open import Reflection.Argument hiding (map) public
-open import Reflection.Term hiding (_≟_; getName) public
-open import Reflection.Name hiding (_≟_; _≈_; _≈?_) public
-open import Reflection.Definition hiding (_≟_) public
-open import Reflection.Meta hiding (_≟_; _≈_; _≈?_) public
-open import Reflection.Abstraction using (unAbs) public
+open import Reflection.AST.Argument hiding (map) public
+open import Reflection.AST.Term hiding (_≟_; getName) public
+open import Reflection.AST.Name hiding (_≟_; _≈_; _≈?_) public
+open import Reflection.AST.Definition hiding (_≟_) public
+open import Reflection.AST.Meta hiding (_≟_; _≡ᵇ_; _≈_; _≈?_) public
+open import Reflection.AST.Abstraction using (unAbs) public
 
-open import Reflection.Abstraction using (unAbs) public
-open import Reflection.Argument using (vArg; hArg; iArg; unArg; _⟨∷⟩_; map-Args) public
-open import Reflection using (Term; Type; Name; data-cons; pi; abs; Abs; Arg; Clause; data-type; record-type; var; con; def; lam; pat-lam; arg; agda-sort; lit; meta; unknown; Pattern; strErr; ErrorPart; arg-info; visible; hidden; instance′; Definition) public
+
 open import Agda.Builtin.Reflection using (ArgInfo; Modality; Visibility; Literal; Meta) public
+
+open import Reflection.AST.Argument public
+  using (Arg; arg)
+open import Reflection.AST.Argument.Visibility public
+  using (Visibility; visible; hidden; instance′)
+open import Reflection.AST.Argument.Information public
+  using (ArgInfo; arg-info)
+open import Reflection.AST.Abstraction public
+  using (Abs; abs; unAbs)
+open import Reflection.AST.Argument public
+  using (vArg; hArg; iArg; unArg; _⟨∷⟩_; map-Args)
+open import Reflection public
+  using ( Name; Meta; Literal; Pattern; Clause
+        ; ErrorPart; strErr
+        ; Term; Type; pi; var; con; def; lam; pat-lam; agda-sort; lit; meta; unknown
+        ; Definition; data-cons; data-type; record-type
+        )
 
 open import Reflection using (hidden; instance′; TC)
 

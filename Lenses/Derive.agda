@@ -11,7 +11,7 @@ open import Data.Nat using (ℕ)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 open import Reflection hiding (_>>=_; _>>_)
-open import Reflection.Meta
+open import Reflection.AST.Meta
 
 open import Reflection.Utils.Debug
 open import Reflection.Syntax
