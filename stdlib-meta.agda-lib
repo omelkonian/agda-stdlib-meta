@@ -3,3 +3,5 @@ depend:
   standard-library
   standard-library-classes
 include: .
+flags:
+  -WnoUnsupportedIndexedMatch

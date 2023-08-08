@@ -19,7 +19,7 @@ open import Meta
 
 module Tactic.Derive (className : Name) (projName : Name) where
 
-open import Prelude
+open import MetaPrelude
 
 open import Agda.Builtin.Reflection using () renaming (primShowQName to showName)
 

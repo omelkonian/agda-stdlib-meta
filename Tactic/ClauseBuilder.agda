@@ -1,7 +1,7 @@
 {-# OPTIONS --safe --without-K #-}
 module Tactic.ClauseBuilder where
 
-open import Prelude hiding ([_,_])
+open import MetaPrelude hiding ([_,_])
 open import Meta hiding (sort)
 
 import Data.List.NonEmpty as NE

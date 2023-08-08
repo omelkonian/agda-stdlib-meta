@@ -9,7 +9,7 @@
 
 module Reflection.AntiUnification where
 
-open import Prelude
+open import MetaPrelude
 open import Meta
 
 import Data.Maybe as Maybe

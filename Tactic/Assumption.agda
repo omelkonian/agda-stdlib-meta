@@ -5,7 +5,7 @@
 
 module Tactic.Assumption where
 
-open import Prelude
+open import MetaPrelude
 open import Meta
 
 open import Class.Functor

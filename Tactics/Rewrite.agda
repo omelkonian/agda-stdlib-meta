@@ -1,15 +1,15 @@
 {-# OPTIONS -v rewrite:100 #-}
 module Tactics.Rewrite where
 
-open import Prelude hiding (_^_; _≤_)
+open import MetaPrelude hiding (_^_)
 
 open import Data.List.Membership.DecPropositional using (_∈?_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
 open import Data.Maybe.Relation.Unary.Any using (just)
 open import Data.Nat hiding (_≟_; _^_)
-open import Data.Nat.Properties using (≤-refl; ≤-step)
+open import Data.Nat.Properties using (≤-refl) renaming (m≤n⇒m≤1+n to ≤-step)
 open import Data.Product using (map₂)
-open import Reflection hiding (return; _>>=_; _>>_; _≟_)
+open import Reflection hiding (_>>=_; _>>_; _≟_)
 open import Reflection.Syntax
 open import Reflection.Tactic
 open import Reflection.Utils.Debug

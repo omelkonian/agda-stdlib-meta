@@ -5,7 +5,7 @@
 
 module Tactic.Case where
 
-open import Prelude
+open import MetaPrelude
 open import Meta
 
 open import Data.List using (map)

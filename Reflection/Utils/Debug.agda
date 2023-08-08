@@ -4,13 +4,13 @@
 {-# OPTIONS --safe --without-K #-}
 module Reflection.Utils.Debug where
 
-open import Prelude
+open import MetaPrelude
 
 import Data.String as Str
 open import Data.Fin using (Fin)
 
 open import Reflection hiding (_>>_; _>>=_)
-open import Reflection.Term
+open import Reflection.AST.Term
 
 open import Class.Show
 open import Class.Functor

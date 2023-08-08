@@ -10,7 +10,7 @@
 {-# OPTIONS --safe #-}
 module Tactic.Derive.DecEq where
 
-open import Prelude
+open import MetaPrelude
 open import Meta
 
 import Data.List as L
@@ -18,10 +18,9 @@ import Data.List.NonEmpty as NE
 
 open import Relation.Nullary
 open import Relation.Nullary.Decidable
-open import Relation.Nullary.Product
 
 open import Reflection.Tactic
-open import Reflection.Term using (_≟-Pattern_)
+open import Reflection.AST.Term using (_≟-Pattern_)
 open import Reflection.Utils
 open import Reflection.Utils.TCI
 
@@ -44,7 +43,7 @@ open ClauseExprM
 `no  x = quote _because_ ◆⟦ quote false ◆ ∣ quote ofⁿ ◆⟦ x ⟧ ⟧
 
 map' : ∀ {p q} {P : Set p} {Q : Set q} → P ⇔ Q → Dec P → Dec Q
-map' record { f = f ; g = g } = map′ f g
+map' record { to = to ; from = from } = map′ to from
 
 module _ (transName : Name → Maybe Name) where
 

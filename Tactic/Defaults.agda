@@ -1,7 +1,7 @@
 {-# OPTIONS --safe --without-K #-}
 module Tactic.Defaults where
 
-open import Prelude
+open import MetaPrelude
 
 open import Class.MonadTC
 open import Reflection.Debug
@@ -10,5 +10,9 @@ open import Reflection.Debug
 -- to tweak all at once
 instance
   defaultTCOptionsI = record
-    { debug = record defaultDebugOptions { prefix = '┃' } -- ┃⎸
-    ; fuel  = ("reduceDec/constrs" , 5) ∷ [] }
+    { debug = record defaultDebugOptions
+      { prefix = '┃' -- ┃⎸
+      ; filter = Filter.⊥
+      }
+    ; fuel  = ("reduceDec/constrs" , 5) ∷ []
+    }

@@ -1,14 +1,14 @@
 {-# OPTIONS --safe --without-K #-}
 module Reflection.Utils where
 
-open import Prelude
+open import MetaPrelude
 open import Meta hiding (toℕ)
 
-import Reflection.Abstraction as Abs
-import Reflection.Name as Name
-open import Reflection.Argument as Arg hiding (map)
-open import Reflection.Argument.Information
-open import Reflection.Argument.Visibility as Vis
+import Reflection.AST.Abstraction as Abs
+import Reflection.AST.Name as Name
+open import Reflection.AST.Argument as Arg hiding (map)
+open import Reflection.AST.Argument.Information
+open import Reflection.AST.Argument.Visibility as Vis
 
 open import Data.Product using (map₁)
 open import Data.List using (map; zip; zipWith)

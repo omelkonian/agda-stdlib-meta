@@ -1,10 +1,11 @@
 {-# OPTIONS -v try:100 #-}
 module Tactics.Try where
 
-open import Prelude
+open import MetaPrelude
 
 open import Data.List
-open import Reflection hiding (return; _>>=_; _>>_; _≟_)
+open import Reflection hiding (_>>=_; _>>_; _≟_)
+
 open import Reflection.Syntax
 open import Reflection.Utils
 open import Reflection.Utils.Debug
