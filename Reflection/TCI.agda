@@ -128,5 +128,8 @@ module MonadTCI where
   runSpeculative    : TC (A × Bool) → TC A
   runSpeculative    = R.runSpeculative ∘_
 
+  getInstances      : Meta → TC (List Term)
+  getInstances      = liftTC1 R'.getInstances
+
 MonadTC-TCI : MonadTC TC ⦃ Monad-TC ⦄ ⦃ MonadError-TC ⦄
 MonadTC-TCI = record { MonadTCI }

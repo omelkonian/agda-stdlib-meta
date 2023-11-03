@@ -92,6 +92,7 @@ record MonadTC (M : ∀ {f} → Set f → Set f)
     isMacro          : Name → M Bool
     debugPrint       : String → ℕ → List ErrorPart → M ⊤
     runSpeculative   : M (A × Bool) → M A
+    getInstances     : Meta → M (List Term)
 
   instance _ = Functor-M
   open MonadError me
@@ -351,5 +352,19 @@ module _ {M : ∀ {f} → Set f → Set f}
     runWithHole hole tac
     return hole
 
+  -- Finding all instance candidates of a given type.
+  findInstances : Type → M (List Term)
+  findInstances ty = runAndReset $ do
+    just m ← findMeta <$> newMeta ty
+      where _ → error1 "[findInstances] newMeta did not produce meta-variable!"
+    getInstances m
+    where
+      open import Data.Maybe using (_<∣>_)
+      findMeta = λ where
+        (pi (arg _ ty) (abs _ t)) → findMeta ty <∣> findMeta t
+        (lam _ (abs _ t))         → findMeta t
+        (meta m _)                → just m
+        _                         → nothing
+
 MonadTC-TC : MonadTC R.TC ⦃ Monad-TC ⦄ ⦃ MonadError-TC ⦄
-MonadTC-TC = record { R; R' using (quoteωTC; withReconstructed; onlyReduceDefs; dontReduceDefs) }
+MonadTC-TC = record { R; R' using (quoteωTC; withReconstructed; onlyReduceDefs; dontReduceDefs; getInstances) }

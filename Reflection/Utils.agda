@@ -170,9 +170,8 @@ module _ (f : ℕ → ℕ) where
 
     mapFreeVarsᶜ : ℕ → (Clause → Clause)
     mapFreeVarsᶜ b = λ where
-      -- clause        : (tel : List (Σ String λ _ → Arg Type)) (ps : List (Arg Pattern)) (t : Term) → Clause
-      (clause tel ps t) → clause (mapFreeVarsᵗ b tel) (mapFreeVarsᵖ∗ b ps) (mapFreeVars (length tel + b) t)
-      -- absurd-clause : (tel : List (Σ String λ _ → Arg Type)) (ps : List (Arg Pattern)) → Clause
+      (clause tel ps t) → clause (mapFreeVarsᵗ b tel) (mapFreeVarsᵖ∗ b ps)
+                                 (mapFreeVars (length tel + b) t)
       (absurd-clause tel ps) → absurd-clause (mapFreeVarsᵗ b tel) (mapFreeVarsᵖ∗ b ps)
     mapFreeVarsᶜ∗ : ℕ → (List Clause → List Clause)
     mapFreeVarsᶜ∗ b = λ where
@@ -240,6 +239,7 @@ apply⋯ is n = def n $ remove-iArgs $
   map (λ{ (n , arg i _) → arg i (♯ (length is ∸ suc (toℕ n)))}) (zip (allFin $ length is) is)
 
 -- ** records
+
 mkRecord : List (Name × Term) → Term
 mkRecord fs = pat-lam (map (λ where (fn , e) → clause [] [ vArg (proj fn) ] e) fs) []
 
