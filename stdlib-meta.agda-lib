@@ -1,3 +1,5 @@
-name: stdlib-meta
-depend: standard-library
+name: standard-library-meta
+depend:
+  standard-library
+  standard-library-classes
 include: .

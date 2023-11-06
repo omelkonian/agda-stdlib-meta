@@ -1,6 +1,9 @@
 module Main where
 
-open import Classes
+open import Class.MonadReader
+open import Class.MonadError
+open import Class.MonadTC
+
 open import Lenses
 open import Tactics
 
