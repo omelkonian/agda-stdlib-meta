@@ -1,19 +1,22 @@
 <!DOCTYPE HTML>
-<html><head><meta charset="utf-8"><title>Main</title><link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css'/><style>.github-fork-ribbon:before { background-color: #333; }</style><link rel="stylesheet" href="css/Agda.css"></head><body><a class='github-fork-ribbon'href='https://github.com/omelkonian/stdlib-meta/tree/master/Main.agda'data-ribbon='Source code on Github' title='Source code on Github'>Source code on Github</a><pre class="Agda"><a id="1" class="Keyword">module</a> <a id="8" href="Main.html" class="Module">Main</a> <a id="13" class="Keyword">where</a>
+<html><head><meta charset="utf-8"><title>Main</title><link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css'/><style>.github-fork-ribbon:before { background-color: #333; }</style><link rel="stylesheet" href="css/Agda.css"></head><body><a class='github-fork-ribbon'href='https://github.com/omelkonian/stdlib-meta/tree/external-classes/Main.agda'data-ribbon='Source code on Github' title='Source code on Github'>Source code on Github</a><pre class="Agda"><a id="1" class="Keyword">module</a> <a id="8" href="Main.html" class="Module">Main</a> <a id="13" class="Keyword">where</a>
 
-<a id="20" class="Keyword">open</a> <a id="25" class="Keyword">import</a> <a id="32" href="Classes.html" class="Module">Classes</a>
-<a id="40" class="Keyword">open</a> <a id="45" class="Keyword">import</a> <a id="52" href="Lenses.html" class="Module">Lenses</a>
-<a id="59" class="Keyword">open</a> <a id="64" class="Keyword">import</a> <a id="71" href="Tactics.html" class="Module">Tactics</a>
+<a id="20" class="Keyword">open</a> <a id="25" class="Keyword">import</a> <a id="32" href="Class.MonadReader.html" class="Module">Class.MonadReader</a>
+<a id="50" class="Keyword">open</a> <a id="55" class="Keyword">import</a> <a id="62" href="Class.MonadError.html" class="Module">Class.MonadError</a>
+<a id="79" class="Keyword">open</a> <a id="84" class="Keyword">import</a> <a id="91" href="Class.MonadTC.html" class="Module">Class.MonadTC</a>
 
-<a id="80" class="Keyword">open</a> <a id="85" class="Keyword">import</a> <a id="92" href="Tactic.AnyOf.html" class="Module">Tactic.AnyOf</a>
-<a id="105" class="Keyword">open</a> <a id="110" class="Keyword">import</a> <a id="117" href="Tactic.Assumption.html" class="Module">Tactic.Assumption</a>
-<a id="135" class="Keyword">open</a> <a id="140" class="Keyword">import</a> <a id="147" href="Tactic.Case.html" class="Module">Tactic.Case</a>
-<a id="159" class="Keyword">open</a> <a id="164" class="Keyword">import</a> <a id="171" href="Tactic.Constrs.html" class="Module">Tactic.Constrs</a>
-<a id="186" class="Keyword">open</a> <a id="191" class="Keyword">import</a> <a id="198" href="Tactic.EquationalReasoning.html" class="Module">Tactic.EquationalReasoning</a>
-<a id="225" class="Keyword">open</a> <a id="230" class="Keyword">import</a> <a id="237" href="Tactic.Eta.html" class="Module">Tactic.Eta</a>
-<a id="248" class="Keyword">open</a> <a id="253" class="Keyword">import</a> <a id="260" href="Tactic.Intro.html" class="Module">Tactic.Intro</a>
-<a id="273" class="Keyword">open</a> <a id="278" class="Keyword">import</a> <a id="285" href="Tactic.ReduceDec.html" class="Module">Tactic.ReduceDec</a>
+<a id="106" class="Keyword">open</a> <a id="111" class="Keyword">import</a> <a id="118" href="Lenses.html" class="Module">Lenses</a>
+<a id="125" class="Keyword">open</a> <a id="130" class="Keyword">import</a> <a id="137" href="Tactics.html" class="Module">Tactics</a>
 
-<a id="303" class="Keyword">open</a> <a id="308" class="Keyword">import</a> <a id="315" href="Tactic.Derive.DecEq.html" class="Module">Tactic.Derive.DecEq</a>
-<a id="335" class="Keyword">open</a> <a id="340" class="Keyword">import</a> <a id="347" href="Tactic.Derive.Show.html" class="Module">Tactic.Derive.Show</a>
+<a id="146" class="Keyword">open</a> <a id="151" class="Keyword">import</a> <a id="158" href="Tactic.AnyOf.html" class="Module">Tactic.AnyOf</a>
+<a id="171" class="Keyword">open</a> <a id="176" class="Keyword">import</a> <a id="183" href="Tactic.Assumption.html" class="Module">Tactic.Assumption</a>
+<a id="201" class="Keyword">open</a> <a id="206" class="Keyword">import</a> <a id="213" href="Tactic.Case.html" class="Module">Tactic.Case</a>
+<a id="225" class="Keyword">open</a> <a id="230" class="Keyword">import</a> <a id="237" href="Tactic.Constrs.html" class="Module">Tactic.Constrs</a>
+<a id="252" class="Keyword">open</a> <a id="257" class="Keyword">import</a> <a id="264" href="Tactic.EquationalReasoning.html" class="Module">Tactic.EquationalReasoning</a>
+<a id="291" class="Keyword">open</a> <a id="296" class="Keyword">import</a> <a id="303" href="Tactic.Eta.html" class="Module">Tactic.Eta</a>
+<a id="314" class="Keyword">open</a> <a id="319" class="Keyword">import</a> <a id="326" href="Tactic.Intro.html" class="Module">Tactic.Intro</a>
+<a id="339" class="Keyword">open</a> <a id="344" class="Keyword">import</a> <a id="351" href="Tactic.ReduceDec.html" class="Module">Tactic.ReduceDec</a>
+
+<a id="369" class="Keyword">open</a> <a id="374" class="Keyword">import</a> <a id="381" href="Tactic.Derive.DecEq.html" class="Module">Tactic.Derive.DecEq</a>
+<a id="401" class="Keyword">open</a> <a id="406" class="Keyword">import</a> <a id="413" href="Tactic.Derive.Show.html" class="Module">Tactic.Derive.Show</a>
 </pre></body></html>
