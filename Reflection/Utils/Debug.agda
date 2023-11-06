@@ -12,12 +12,10 @@ open import Data.Fin using (Fin)
 open import Reflection hiding (_>>_; _>>=_)
 open import Reflection.Term
 
-open import Class.Show.Core
-open import Class.Show.Instances
+open import Class.Show
 open import Class.Functor
 open import Class.Monad
-open import Class.Traversable.Core
-open import Class.Traversable.Instances
+open import Class.Traversable
 
 private variable
   ℓ : Level
