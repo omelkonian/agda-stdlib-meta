@@ -34,8 +34,6 @@ private variable
   a b : Level
   A : Set a
 
-instance _ = Functor-M ⦃ Class.Monad.Monad-TC ⦄
-
 record ClauseBuilder (M : Set → Set) : Set₁ where
   field
     Base : Set → Set
@@ -134,13 +132,13 @@ module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadErr
   constructorPatterns' : Type → M (List SinglePattern)
   constructorPatterns' ty = do
     constrs ← getConstrsForType ty
-    traverse (λ where (n , _) → constrToPattern n ty) constrs
+    traverse (λ (n , _) → constrToPattern n ty) constrs
 
   -- all possible patterns for an inductive type
   constructorPatternsTyped : Type → List Type → M (List SinglePattern)
   constructorPatternsTyped ty ps = do
     constrs ← getConstrsForType ty
-    traverse (λ where (n , _) → constrToPatternTyped n ps) constrs
+    traverse (λ (n , _) → constrToPatternTyped n ps) constrs
 
 ClauseInfo : Set
 ClauseInfo = List SinglePattern
@@ -206,7 +204,7 @@ ContextMonad-Id .introPatternM _ a = a
 
 module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadError (List ErrorPart) M ⦄ ⦃ mre : MonadReader TCEnv M ⦄ ⦃ _ : MonadTC M ⦄ where
 
-  instance _ = Functor-M
+  instance _ = Functor-M {M = M}
 
   refineWithSingle : (Term → Term) → M Term → M Term
   refineWithSingle ref x = do
@@ -270,11 +268,11 @@ module _ {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ me : MonadErr
 
 module ClauseExprM {M : ∀ {a} → Set a → Set a} ⦃ _ : Monad M ⦄ ⦃ _ : ContextMonad M ⦄ where
 
-  instance _ = Functor-M
+  instance _ = Functor-M {M = M}
 
   -- Construct a ClauseExpr in M and extend the context appropriately
   matchExprM : List (SinglePattern × M (ClauseExpr ⊎ Maybe Term)) → M ClauseExpr
-  matchExprM = _<$>_ MatchExpr ∘ traverse (λ where (a , b) → (a ,_) <$> introPatternM a b)
+  matchExprM = _<$>_ MatchExpr ∘ traverse (λ (a , b) → (a ,_) <$> introPatternM a b)
 
   multiMatchExprM : List (NE.List⁺ SinglePattern × M (ClauseExpr ⊎ Maybe Term)) → M ClauseExpr
   multiMatchExprM = matchExprM ∘ Data.List.map helper

@@ -18,11 +18,9 @@ open import Class.Functor
 open import Class.Monad
 open import Class.Traversable
 
-
-private
-  variable
-    a f : Level
-    A B : Set f
+private variable
+  a f : Level
+  A B : Set f
 
 data ReductionOptions : Set where
   onlyReduce : List Name → ReductionOptions
@@ -94,7 +92,7 @@ record MonadTC (M : ∀ {f} → Set f → Set f)
     runSpeculative   : M (A × Bool) → M A
     getInstances     : Meta → M (List Term)
 
-  instance _ = Functor-M
+  instance _ = Functor-M {M = M}
   open MonadError me
 
   runAndReset : M A → M A
@@ -140,8 +138,8 @@ record MonadTC (M : ∀ {f} → Set f → Set f)
   -- this allows mutual recursion
   declareAndDefineFuns : List (Arg Name × Type × List Clause) → M ⊤
   declareAndDefineFuns ds = do
-    traverse (λ where (n , t , _) → declareDef n t) ds
-    traverse ((λ where (arg _ n , _ , cs) → defineFun n cs)) ds
+    traverse (λ (n , t , _) → declareDef n t) ds
+    traverse (λ where (arg _ n , _ , cs) → defineFun n cs) ds
     return _
 
   declareAndDefineFun : Arg Name → Type → List Clause → M ⊤
@@ -153,8 +151,7 @@ record MonadTC (M : ∀ {f} → Set f → Set f)
 module _ {M : ∀ {f} → Set f → Set f}
   ⦃ m : Monad M ⦄ ⦃ me : MonadError (List ErrorPart) M ⦄ ⦃ mtc : MonadTC M ⦄ ⦃ mre : MonadReader TCEnv M ⦄ where
 
-  instance _ = Functor-M
-
+  instance _ = Functor-M {M = M}
   open MonadError me
   open MonadTC mtc
   open MonadReader mre

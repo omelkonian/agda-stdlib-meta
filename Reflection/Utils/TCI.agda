@@ -228,7 +228,7 @@ getDataDef n = inDebugPath "getDataDef" do
   (data-type pars cs) ← getDefinition n
     where _ → error1 "Not a data definition!"
   debugLogᵐ ("Constructor names: " ∷ᵈᵐ cs ᵛ ∷ᵈᵐ []ᵐ)
-  cs' ← traverse (λ n → (n ,_) <$> getType' n) cs
+  cs' ← traverse ⦃ Functor-List ⦄ (λ n → (n ,_) <$> getType' n) cs
   debugLogᵐ ("Result: " ∷ᵈᵐ cs' ᵛⁿ ∷ᵈᵐ []ᵐ)
   args ← proj₁ <$> getType' n
   return record { name = n ; constructors = cs' ; params = take pars args ; indices = drop pars args }
