@@ -2,15 +2,19 @@
 <html><head><meta charset="utf-8"><title>Tactic.Defaults</title><link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css'/><style>.github-fork-ribbon:before { background-color: #333; }</style><link rel="stylesheet" href="css/Agda.css"></head><body><a class='github-fork-ribbon'href='https://github.com/omelkonian/stdlib-meta/tree/master/Tactic/Defaults.agda'data-ribbon='Source code on Github' title='Source code on Github'>Source code on Github</a><pre class="Agda"><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Pragma">--safe</a> <a id="20" class="Pragma">--without-K</a> <a id="32" class="Symbol">#-}</a>
 <a id="36" class="Keyword">module</a> <a id="43" href="Tactic.Defaults.html" class="Module">Tactic.Defaults</a> <a id="59" class="Keyword">where</a>
 
-<a id="66" class="Keyword">open</a> <a id="71" class="Keyword">import</a> <a id="78" href="Prelude.html" class="Module">Prelude</a>
+<a id="66" class="Keyword">open</a> <a id="71" class="Keyword">import</a> <a id="78" href="MetaPrelude.html" class="Module">MetaPrelude</a>
 
-<a id="87" class="Keyword">open</a> <a id="92" class="Keyword">import</a> <a id="99" href="Class.MonadTC.html" class="Module">Class.MonadTC</a>
-<a id="113" class="Keyword">open</a> <a id="118" class="Keyword">import</a> <a id="125" href="Reflection.Debug.html" class="Module">Reflection.Debug</a>
+<a id="91" class="Keyword">open</a> <a id="96" class="Keyword">import</a> <a id="103" href="Class.MonadTC.html" class="Module">Class.MonadTC</a>
+<a id="117" class="Keyword">open</a> <a id="122" class="Keyword">import</a> <a id="129" href="Reflection.Debug.html" class="Module">Reflection.Debug</a>
 
-<a id="143" class="Comment">-- There should only ever be one instance, with this being convenient</a>
-<a id="213" class="Comment">-- to tweak all at once</a>
-<a id="237" class="Keyword">instance</a>
-  <a id="defaultTCOptionsI"></a><a id="248" href="Tactic.Defaults.html#248" class="Function">defaultTCOptionsI</a> <a id="266" class="Symbol">=</a> <a id="268" class="Keyword">record</a>
-    <a id="279" class="Symbol">{</a> <a id="281" href="Class.MonadTC.html#648" class="Field">debug</a> <a id="287" class="Symbol">=</a> <a id="289" class="Keyword">record</a> <a id="296" href="Reflection.Debug.html#2485" class="Function">defaultDebugOptions</a> <a id="316" class="Symbol">{</a> <a id="318" href="Reflection.Debug.html#2467" class="Field">prefix</a> <a id="325" class="Symbol">=</a> <a id="327" class="String">&#39;┃&#39;</a> <a id="331" class="Symbol">}</a> <a id="333" class="Comment">-- ┃⎸</a>
-    <a id="343" class="Symbol">;</a> <a id="345" href="Class.MonadTC.html#673" class="Field">fuel</a>  <a id="351" class="Symbol">=</a> <a id="353" class="Symbol">(</a><a id="354" class="String">&quot;reduceDec/constrs&quot;</a> <a id="374" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">,</a> <a id="376" class="Number">5</a><a id="377" class="Symbol">)</a> <a id="379" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="381" href="Agda.Builtin.List.html#184" class="InductiveConstructor">[]</a> <a id="384" class="Symbol">}</a>
+<a id="147" class="Comment">-- There should only ever be one instance, with this being convenient</a>
+<a id="217" class="Comment">-- to tweak all at once</a>
+<a id="241" class="Keyword">instance</a>
+  <a id="defaultTCOptionsI"></a><a id="252" href="Tactic.Defaults.html#252" class="Function">defaultTCOptionsI</a> <a id="270" class="Symbol">=</a> <a id="272" class="Keyword">record</a>
+    <a id="283" class="Symbol">{</a> <a id="285" href="Class.MonadTC.html#652" class="Field">debug</a> <a id="291" class="Symbol">=</a> <a id="293" class="Keyword">record</a> <a id="300" href="Reflection.Debug.html#2489" class="Function">defaultDebugOptions</a>
+      <a id="326" class="Symbol">{</a> <a id="328" href="Reflection.Debug.html#2471" class="Field">prefix</a> <a id="335" class="Symbol">=</a> <a id="337" class="String">&#39;┃&#39;</a> <a id="341" class="Comment">-- ┃⎸</a>
+      <a id="353" class="Symbol">;</a> <a id="355" href="Reflection.Debug.html#2430" class="Field">filter</a> <a id="362" class="Symbol">=</a> <a id="364" href="Algebra.Lattice.Bundles.html#5872" class="Function">Filter.⊥</a>
+      <a id="379" class="Symbol">}</a>
+    <a id="385" class="Symbol">;</a> <a id="387" href="Class.MonadTC.html#677" class="Field">fuel</a>  <a id="393" class="Symbol">=</a> <a id="395" class="Symbol">(</a><a id="396" class="String">&quot;reduceDec/constrs&quot;</a> <a id="416" href="Agda.Builtin.Sigma.html#235" class="InductiveConstructor Operator">,</a> <a id="418" class="Number">5</a><a id="419" class="Symbol">)</a> <a id="421" href="Agda.Builtin.List.html#199" class="InductiveConstructor Operator">∷</a> <a id="423" href="Agda.Builtin.List.html#184" class="InductiveConstructor">[]</a>
+    <a id="430" class="Symbol">}</a>
 </pre></body></html>
