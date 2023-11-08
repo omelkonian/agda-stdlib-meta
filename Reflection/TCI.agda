@@ -36,15 +36,15 @@ MonadError-TC : MonadError (List ErrorPart) TC
 MonadError-TC = MonadError-ReaderT ⦃ Class.Monad.Monad-TC ⦄ ⦃ Class.MonadError.MonadError-TC ⦄
 
 applyReductionOptions : TC A → TC A
-applyReductionOptions x r@record { reduction = onlyReduce red } = R'.onlyReduceDefs red (x r)
-applyReductionOptions x r@record { reduction = dontReduce red } = R'.dontReduceDefs red (x r)
+applyReductionOptions x r@record { reduction = onlyReduce red } = R'.withReduceDefs (true ,  red) (x r)
+applyReductionOptions x r@record { reduction = dontReduce red } = R'.withReduceDefs (false , red) (x r)
 
 applyNormalisation : TC A → TC A
 applyNormalisation x r@record { normalisation = n } = R.withNormalisation n (applyReductionOptions x r)
 
 applyReconstruction : TC A → TC A
 applyReconstruction x r@record { reconstruction = false } = x r
-applyReconstruction x r@record { reconstruction = true  } = R'.withReconstructed (x r)
+applyReconstruction x r@record { reconstruction = true  } = R'.withReconstructed true (x r)
 
 applyNoConstraints : TC A → TC A
 applyNoConstraints x r@record { noConstraints = false } = x r
