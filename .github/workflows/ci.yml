@@ -11,9 +11,9 @@ jobs:
       - uses: omelkonian/setup-agda@master
         with:
           agda-version: 2.6.4
-          stdlib-version: 1.7.3
+          stdlib-version: 2.0-rc1
           libraries: |
-            omelkonian/agda-stdlib-classes#v1.7.3
+            omelkonian/agda-stdlib-classes#v2.0-rc1
           main: Main
           deploy: ${{ github.ref == 'refs/heads/master' }}
           token: ${{ secrets.GITHUB_TOKEN }}
