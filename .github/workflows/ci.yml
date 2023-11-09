@@ -7,7 +7,7 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.3.1
+      - uses: actions/checkout@v3
       - uses: omelkonian/setup-agda@master
         with:
           agda-version: 2.6.4

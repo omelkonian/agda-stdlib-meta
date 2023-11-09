@@ -4,7 +4,6 @@ open import Class.MonadReader
 open import Class.MonadError
 open import Class.MonadTC
 
-open import Lenses
 open import Tactics
 
 open import Tactic.AnyOf
