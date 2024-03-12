@@ -205,7 +205,9 @@ logCurrentContext = markDontFail "logCurrentContext" (logContext =<< getContext)
 inDebugPath : String → M A → M A
 inDebugPath path x = withAppendDebugPath path do
   debugLog (("*****" <+> path <+> "*****") ∷ᵈ [])
-  logCurrentContext
+  -- This throws an internal error if the macro is run in a type signature
+  -- (Agda issue #7187)
+  -- logCurrentContext
   x
 
 viewAndReduceTy : Type → M TypeView
