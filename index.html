@@ -1,21 +1,22 @@
 <!DOCTYPE HTML>
 <html><head><meta charset="utf-8"><title>Main</title><link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css'/><style>.github-fork-ribbon:before { background-color: #333; }</style><link rel="stylesheet" href="css/Agda.css"></head><body><a class='github-fork-ribbon'href='https://github.com/omelkonian/agda-stdlib-meta/tree/master/'data-ribbon='Source code on Github' title='Source code on Github'>Source code on Github</a><pre class="Agda"><a id="1" class="Keyword">module</a> <a id="8" href="Main.html" class="Module">Main</a> <a id="13" class="Keyword">where</a>
 
-<a id="20" class="Keyword">open</a> <a id="25" class="Keyword">import</a> <a id="32" href="Class.MonadReader.html" class="Module">Class.MonadReader</a>
-<a id="50" class="Keyword">open</a> <a id="55" class="Keyword">import</a> <a id="62" href="Class.MonadError.html" class="Module">Class.MonadError</a>
-<a id="79" class="Keyword">open</a> <a id="84" class="Keyword">import</a> <a id="91" href="Class.MonadTC.html" class="Module">Class.MonadTC</a>
+<a id="20" class="Keyword">open</a> <a id="25" class="Keyword">import</a> <a id="32" href="Algebra.Function.html" class="Module">Algebra.Function</a>
 
-<a id="106" class="Keyword">open</a> <a id="111" class="Keyword">import</a> <a id="118" href="Tactics.html" class="Module">Tactics</a>
+<a id="50" class="Keyword">open</a> <a id="55" class="Keyword">import</a> <a id="62" href="Class.MonadReader.html" class="Module">Class.MonadReader</a>
+<a id="80" class="Keyword">open</a> <a id="85" class="Keyword">import</a> <a id="92" href="Class.MonadError.html" class="Module">Class.MonadError</a>
+<a id="109" class="Keyword">open</a> <a id="114" class="Keyword">import</a> <a id="121" href="Class.MonadTC.html" class="Module">Class.MonadTC</a>
 
-<a id="127" class="Keyword">open</a> <a id="132" class="Keyword">import</a> <a id="139" href="Tactic.AnyOf.html" class="Module">Tactic.AnyOf</a>
-<a id="152" class="Keyword">open</a> <a id="157" class="Keyword">import</a> <a id="164" href="Tactic.Assumption.html" class="Module">Tactic.Assumption</a>
-<a id="182" class="Keyword">open</a> <a id="187" class="Keyword">import</a> <a id="194" href="Tactic.Case.html" class="Module">Tactic.Case</a>
-<a id="206" class="Keyword">open</a> <a id="211" class="Keyword">import</a> <a id="218" href="Tactic.Constrs.html" class="Module">Tactic.Constrs</a>
-<a id="233" class="Keyword">open</a> <a id="238" class="Keyword">import</a> <a id="245" href="Tactic.EquationalReasoning.html" class="Module">Tactic.EquationalReasoning</a>
-<a id="272" class="Keyword">open</a> <a id="277" class="Keyword">import</a> <a id="284" href="Tactic.Eta.html" class="Module">Tactic.Eta</a>
-<a id="295" class="Keyword">open</a> <a id="300" class="Keyword">import</a> <a id="307" href="Tactic.Intro.html" class="Module">Tactic.Intro</a>
-<a id="320" class="Keyword">open</a> <a id="325" class="Keyword">import</a> <a id="332" href="Tactic.ReduceDec.html" class="Module">Tactic.ReduceDec</a>
+<a id="136" class="Keyword">open</a> <a id="141" class="Keyword">import</a> <a id="148" href="Reflection.Syntax.html" class="Module">Reflection.Syntax</a>
+<a id="166" class="Keyword">open</a> <a id="171" class="Keyword">import</a> <a id="178" href="Reflection.Debug.html" class="Module">Reflection.Debug</a>
+<a id="195" class="Keyword">open</a> <a id="200" class="Keyword">import</a> <a id="207" href="Reflection.Tactic.html" class="Module">Reflection.Tactic</a>
+<a id="225" class="Keyword">open</a> <a id="230" class="Keyword">import</a> <a id="237" href="Reflection.TCI.html" class="Module">Reflection.TCI</a>
+<a id="252" class="Keyword">open</a> <a id="257" class="Keyword">import</a> <a id="264" href="Reflection.Utils.html" class="Module">Reflection.Utils</a>
+<a id="281" class="Keyword">open</a> <a id="286" class="Keyword">import</a> <a id="293" href="Reflection.Utils.Debug.html" class="Module">Reflection.Utils.Debug</a>
+<a id="316" class="Keyword">open</a> <a id="321" class="Keyword">import</a> <a id="328" href="Reflection.Utils.TCI.html" class="Module">Reflection.Utils.TCI</a>
+<a id="349" class="Keyword">open</a> <a id="354" class="Keyword">import</a> <a id="361" href="Reflection.Utils.TCM.html" class="Module">Reflection.Utils.TCM</a>
+<a id="382" class="Keyword">open</a> <a id="387" class="Keyword">import</a> <a id="394" href="Reflection.AlphaEquality.html" class="Module">Reflection.AlphaEquality</a>
+<a id="419" class="Keyword">open</a> <a id="424" class="Keyword">import</a> <a id="431" href="Reflection.AntiUnification.html" class="Module">Reflection.AntiUnification</a>
 
-<a id="350" class="Keyword">open</a> <a id="355" class="Keyword">import</a> <a id="362" href="Tactic.Derive.DecEq.html" class="Module">Tactic.Derive.DecEq</a>
-<a id="382" class="Keyword">open</a> <a id="387" class="Keyword">import</a> <a id="394" href="Tactic.Derive.Show.html" class="Module">Tactic.Derive.Show</a>
+<a id="459" class="Keyword">open</a> <a id="464" class="Keyword">import</a> <a id="471" href="Tactic.html" class="Module">Tactic</a>
 </pre></body></html>
