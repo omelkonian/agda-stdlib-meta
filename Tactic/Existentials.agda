@@ -1,4 +1,4 @@
-module Tactics.Existentials where
+module Tactic.Existentials where
 
 open import MetaPrelude
 

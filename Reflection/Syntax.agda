@@ -4,15 +4,21 @@ module Reflection.Syntax where
 
 open import MetaPrelude
 
-open import Reflection.AST.Argument hiding (map) public
-open import Reflection.AST.Term hiding (_≟_; getName) public
-open import Reflection.AST.Name hiding (_≟_; _≈_; _≈?_) public
-open import Reflection.AST.Definition hiding (_≟_) public
-open import Reflection.AST.Meta hiding (_≟_; _≡ᵇ_; _≈_; _≈?_) public
-open import Reflection.AST.Abstraction using (unAbs) public
+open import Reflection.AST.Argument public
+  hiding (map)
+open import Reflection.AST.Term public
+  hiding (_≟_; getName)
+open import Reflection.AST.Name public
+  hiding (_≟_; _≡ᵇ_; _≈_; _≈?_)
+open import Reflection.AST.Definition public
+  hiding (_≟_)
+open import Reflection.AST.Meta public
+  hiding (_≟_; _≡ᵇ_; _≈_; _≈?_)
+open import Reflection.AST.Abstraction public
+  using (unAbs)
 
-
-open import Agda.Builtin.Reflection using (ArgInfo; Modality; Visibility; Literal; Meta) public
+open import Agda.Builtin.Reflection public
+  using (ArgInfo; Modality; Visibility; Literal; Meta)
 
 open import Reflection.AST.Argument public
   using (Arg; arg)

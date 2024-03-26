@@ -40,27 +40,26 @@ open AlphaEquality {{...}} public
 ------------------------------------------------------------------------
 -- Propositional cases
 
--- In the following cases alpha equality coincides with propositiona
--- equality
+-- In the following cases alpha equality coincides with propositional equality
 
 instance
   α-Visibility : AlphaEquality Visibility
-  α-Visibility = ≟⇒α (_≟_ ⦃ DecEq-Vis ⦄)
+  α-Visibility = ≟⇒α _≟_
 
   α-Modality : AlphaEquality Modality
-  α-Modality = ≟⇒α (_≟_ ⦃ DecEq-Modality ⦄)
+  α-Modality = ≟⇒α _≟_
 
   α-ArgInfo : AlphaEquality ArgInfo
-  α-ArgInfo = ≟⇒α (_≟_ ⦃ DecEq-ArgInfo ⦄)
+  α-ArgInfo = ≟⇒α _≟_
 
   α-Literal : AlphaEquality Literal
-  α-Literal = ≟⇒α (_≟_ ⦃ DecEq-Literal ⦄)
+  α-Literal = ≟⇒α _≟_
 
   α-Meta : AlphaEquality Meta
-  α-Meta = ≟⇒α (_≟_ ⦃ DecEq-Meta ⦄)
+  α-Meta = ≟⇒α _≟_
 
   α-Name : AlphaEquality Name
-  α-Name = ≟⇒α (_≟_ ⦃ DecEq-Name ⦄)
+  α-Name = ≟⇒α _≟_
 
 ------------------------------------------------------------------------
 -- Interesting cases

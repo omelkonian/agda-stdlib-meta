@@ -1,5 +1,5 @@
 {-# OPTIONS -v try:100 #-}
-module Tactics.Try where
+module Tactic.Try where
 
 open import MetaPrelude
 

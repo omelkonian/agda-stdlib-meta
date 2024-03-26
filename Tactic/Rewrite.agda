@@ -1,5 +1,5 @@
 {-# OPTIONS -v rewrite:100 #-}
-module Tactics.Rewrite where
+module Tactic.Rewrite where
 
 open import MetaPrelude hiding (_^_)
 

@@ -1,5 +1,5 @@
 {-# OPTIONS -v extra:100 #-}
-module Tactics.Extra where
+module Tactic.Extra where
 
 open import MetaPrelude
 
