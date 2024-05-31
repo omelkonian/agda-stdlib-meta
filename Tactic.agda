@@ -4,6 +4,7 @@ open import Tactic.Try public
 open import Tactic.Rewrite public
 open import Tactic.Extra public
 open import Tactic.Existentials public
+open import Tactic.ByEq public
 
 open import Tactic.AnyOf public
 open import Tactic.Assumption public
