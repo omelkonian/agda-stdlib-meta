@@ -11,7 +11,7 @@ open import Data.List hiding (align; alignWith; fromMaybe; map; zip; zipWith) pu
 open import Data.Maybe hiding (_>>=_; ap; align; alignWith; fromMaybe; map; zip; zipWith) public
 open import Data.Unit hiding (_≟_) public
 open import Data.Sum hiding (assocʳ; assocˡ; map; map₁; map₂; reduce; swap) public
-open import Data.Product hiding (assocʳ; assocˡ; map; map₁; map₂; swap; zip) public
+open import Data.Product hiding (assocʳ; assocˡ; map; map₁; map₂; swap; zip; zipWith) public
 open import Data.Nat hiding (_≟_; _≤_; _≤?_; _<_; _<?_; _≤ᵇ_; _≡ᵇ_) public
 open import Data.String using (String; _<+>_) public
 

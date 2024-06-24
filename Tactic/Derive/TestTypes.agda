@@ -77,7 +77,7 @@ open import Data.Unit using (⊤) public
 open import Data.Universe using (Universe) public
 open import Data.Vec using (Vec) public
 open import Data.W using (W) public
-open import Data.Word using (Word64) public
+open import Data.Word64 using (Word64) public
 
 stdlibTypes : List Name
 stdlibTypes = quote Bool ∷ quote Container ∷ quote Fin ∷ quote ℤ ∷ quote List ∷ quote Maybe ∷ quote ℕ ∷ quote Σ ∷ quote ℚ ∷ quote Record ∷ quote Refinement ∷ quote Sign ∷ quote _⊎_ ∷ quote These ∷ quote ⊤ ∷ quote Universe ∷ quote Vec ∷ quote W ∷ []
