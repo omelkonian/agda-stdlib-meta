@@ -106,13 +106,13 @@ record MonadTC (M : ∀ {f} → Set f → Set f)
   -- TODO: return true on function, axiom and prim-fun constructors?
   isDef : Name → M Bool
   isDef n = do
-    constructor′ _ ← getDefinition n
+    constructor′ _ _ ← getDefinition n
       where _ → return true
     return false
 
   isCon : Name → M Bool
   isCon n = do
-    constructor′ _ ← getDefinition n
+    constructor′ _ _ ← getDefinition n
       where _ → return false
     return true
 
