@@ -2,7 +2,7 @@
 
 open import Level
 
-open import MetaPrelude
+open import Meta.Prelude
 
 open import Class.Monad
 open import Reflection using (TC; ErrorPart; typeError; catchTC; strErr)

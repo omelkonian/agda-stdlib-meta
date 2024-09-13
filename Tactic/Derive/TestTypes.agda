@@ -2,9 +2,10 @@
 {-# OPTIONS -v allTactics:100 #-}
 module Tactic.Derive.TestTypes where
 
-open import MetaPrelude
 open import Data.Fin
-open import Meta
+
+open import Meta.Prelude
+open import Meta.Init
 
 data E0 : Set where
 

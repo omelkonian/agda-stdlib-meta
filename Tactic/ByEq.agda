@@ -1,8 +1,8 @@
 {-# OPTIONS --safe --without-K #-}
 module Tactic.ByEq where
 
-open import Meta hiding (TC)
-open import MetaPrelude
+open import Meta.Init hiding (TC)
+open import Meta.Prelude
 open import Class.Functor.Core; open import Class.Functor.Instances
 open import Class.Monad.Core; open import Class.Monad.Instances
 open import Reflection using (TC; withNormalisation; inferType; unify)

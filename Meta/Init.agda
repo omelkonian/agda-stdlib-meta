@@ -1,6 +1,6 @@
 {-# OPTIONS --safe --without-K #-}
 
-module Meta where
+module Meta.Init where
 
 open import Reflection.Debug public
 open import Reflection.TCI public

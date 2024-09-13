@@ -1,7 +1,7 @@
 {-# OPTIONS -v rewrite:100 #-}
 module Tactic.Rewrite where
 
-open import MetaPrelude hiding (_^_)
+open import Meta.Prelude hiding (_^_)
 
 open import Data.List.Membership.DecPropositional using (_∈?_)
 open import Data.List.NonEmpty using (List⁺; _∷_)

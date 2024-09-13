@@ -1,8 +1,8 @@
 {-# OPTIONS --safe --without-K #-}
 module Tactic.ClauseBuilder where
 
-open import MetaPrelude hiding ([_,_])
-open import Meta hiding (sort)
+open import Meta.Prelude hiding ([_,_])
+open import Meta.Init hiding (sort)
 
 import Data.List.NonEmpty as NE
 open import Data.List using (zipWith)

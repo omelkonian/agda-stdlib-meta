@@ -5,8 +5,8 @@
 
 module Tactic.ReduceDec where
 
-open import MetaPrelude
-open import Meta
+open import Meta.Prelude
+open import Meta.Init
 
 open import Reflection.Tactic
 open import Reflection.Utils

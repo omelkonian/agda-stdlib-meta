@@ -2,7 +2,7 @@
 
 module Reflection.Syntax where
 
-open import MetaPrelude
+open import Meta.Prelude
 
 open import Reflection.AST.Argument public
   hiding (map)

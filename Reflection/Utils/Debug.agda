@@ -4,7 +4,7 @@
 {-# OPTIONS --safe --without-K #-}
 module Reflection.Utils.Debug where
 
-open import MetaPrelude
+open import Meta.Prelude
 
 import Data.String as Str
 open import Data.Fin using (Fin)

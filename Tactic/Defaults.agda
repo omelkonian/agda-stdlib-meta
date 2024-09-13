@@ -1,7 +1,7 @@
 {-# OPTIONS --safe --without-K #-}
 module Tactic.Defaults where
 
-open import MetaPrelude
+open import Meta.Prelude
 
 open import Class.MonadTC
 open import Reflection.Debug

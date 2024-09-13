@@ -1,6 +1,6 @@
 {-# OPTIONS --safe --without-K #-}
 
-module MetaPrelude where
+module Meta.Prelude where
 
 open import Level renaming (_⊔_ to _⊔ˡ_; suc to sucˡ; zero to zeroˡ) public
 open import Function public

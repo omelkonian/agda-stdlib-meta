@@ -2,7 +2,7 @@
 
 module Class.MonadTC where
 
-open import MetaPrelude
+open import Meta.Prelude
 
 open import Data.List using (map)
 

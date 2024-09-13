@@ -8,8 +8,8 @@
 
 module Reflection.AlphaEquality where
 
-open import MetaPrelude
-open import Meta
+open import Meta.Prelude
+open import Meta.Init
 open import Relation.Nullary.Decidable using (⌊_⌋)
 open import Relation.Binary            using (DecidableEquality)
 

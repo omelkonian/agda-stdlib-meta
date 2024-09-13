@@ -1,7 +1,7 @@
 {-# OPTIONS -v extra:100 #-}
 module Tactic.Extra where
 
-open import MetaPrelude
+open import Meta.Prelude
 
 open import Data.Integer as Int using (ℤ)
 open import Data.List using (List; drop; map; [_]; [])

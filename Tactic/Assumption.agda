@@ -5,8 +5,8 @@
 
 module Tactic.Assumption where
 
-open import MetaPrelude
-open import Meta
+open import Meta.Prelude
+open import Meta.Init
 
 open import Class.Functor
 open import Class.Monad
@@ -47,6 +47,6 @@ private
   module Test where
     test₁ : {A B : Set} → A → B → A
     test₁ a b = assumption
-    
+
     test₂ : {A B : Set} → A → B → B
     test₂ a b = assumption

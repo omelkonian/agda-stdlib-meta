@@ -8,8 +8,8 @@ module Reflection.Tactic where
 import Reflection as R
 open import Class.Monad hiding (Monad-TC)
 open import Class.MonadTC
-open import MetaPrelude
-open import Meta
+open import Meta.Prelude
+open import Meta.Init
 
 open MonadTC ⦃...⦄
 

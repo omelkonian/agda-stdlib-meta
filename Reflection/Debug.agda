@@ -2,7 +2,7 @@
 
 module Reflection.Debug where
 
-open import MetaPrelude hiding (⊤; _∧_; _∨_; filter)
+open import Meta.Prelude hiding (⊤; _∧_; _∨_; filter)
 
 import Data.Bool as B
 import Data.String as S

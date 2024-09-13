@@ -9,8 +9,8 @@
 
 module Reflection.AntiUnification where
 
-open import MetaPrelude
-open import Meta
+open import Meta.Prelude
+open import Meta.Init
 
 import Data.Maybe as Maybe
 import Data.Nat as Nat

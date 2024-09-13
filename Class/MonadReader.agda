@@ -2,7 +2,7 @@
 
 module Class.MonadReader where
 
-open import MetaPrelude
+open import Meta.Prelude
 
 open import Class.Monad
 open import Class.Functor

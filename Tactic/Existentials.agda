@@ -1,6 +1,6 @@
 module Tactic.Existentials where
 
-open import MetaPrelude
+open import Meta.Prelude
 
 open import Reflection hiding (_>>=_; _>>_; _≟_)
 open import Reflection.Syntax

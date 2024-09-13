@@ -4,8 +4,8 @@
 {-# OPTIONS --safe #-}
 module Tactic.Derive.Show where
 
-open import MetaPrelude
-open import Meta
+open import Meta.Prelude
+open import Meta.Init
 
 open import Agda.Builtin.Reflection using (primShowQName)
 

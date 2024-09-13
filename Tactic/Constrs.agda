@@ -6,8 +6,8 @@
 
 module Tactic.Constrs where
 
-open import MetaPrelude
-open import Meta
+open import Meta.Prelude
+open import Meta.Init
 
 open import Data.List
 

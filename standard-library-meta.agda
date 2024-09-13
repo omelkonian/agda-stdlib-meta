@@ -1,4 +1,4 @@
-module Main where
+module standard-library-meta where
 
 open import Algebra.Function
 

@@ -15,11 +15,11 @@
 
 {-# OPTIONS -v allTactics:100 #-}
 {-# OPTIONS --safe --without-K #-}
-open import Meta
+open import Meta.Init
 
 module Tactic.Derive (className : Name) (projName : Name) where
 
-open import MetaPrelude
+open import Meta.Prelude
 
 open import Agda.Builtin.Reflection using () renaming (primShowQName to showName)
 

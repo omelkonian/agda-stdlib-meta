@@ -11,7 +11,7 @@ open import Meta
 
 module Tactic.J (J-name refl-name : Name) where
 
-open import MetaPrelude
+open import Meta.Prelude
 
 open import Class.Monad
 open import Class.MonadError

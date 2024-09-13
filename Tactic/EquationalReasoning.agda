@@ -5,7 +5,7 @@
 
 module Tactic.EquationalReasoning where
 
-open import MetaPrelude
+open import Meta.Prelude
 
 import Relation.Binary.PropositionalEquality as ≡
 open import Agda.Builtin.Reflection

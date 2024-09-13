@@ -1,8 +1,8 @@
 {-# OPTIONS --safe --without-K #-}
 module Reflection.Utils where
 
-open import MetaPrelude
-open import Meta hiding (toℕ)
+open import Meta.Prelude
+open import Meta.Init hiding (toℕ)
 
 import Reflection.AST.Abstraction as Abs
 import Reflection.AST.Name as Name

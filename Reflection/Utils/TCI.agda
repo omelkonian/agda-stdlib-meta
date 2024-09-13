@@ -1,7 +1,7 @@
 {-# OPTIONS --safe --without-K #-}
 
-open import MetaPrelude
-open import Meta
+open import Meta.Prelude
+open import Meta.Init
 
 open import Class.Monad
 open import Class.MonadError.Instances
